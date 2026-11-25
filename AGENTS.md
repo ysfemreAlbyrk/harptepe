@@ -4,8 +4,10 @@
 
 - Uygulama `web/` altında Vite + React 18 + TypeScript ile yazıldı.
 - Geliştirme: `cd web && npm run dev`
+- Web + yerel ağ senkronizasyonu ile geliştirme: `cd web && npm run dev:all`
 - Testler: `cd web && npm test`
 - Üretim derlemesi: `cd web && npm run build`
+- Derleyip tek sunucuda oyuncu erişimi başlatma: `cd web && npm start`
 - Yerel durum `localStorage` anahtarı `harptepe-krallik-simulasyonu-v1` altında saklanır.
 - Projeksiyon/seyirci görünümü için `?projection=1` sorgu parametresi kullanılır.
 
