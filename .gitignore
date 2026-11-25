@@ -1,0 +1,9 @@
+# İşletim sistemi ve düzenleyici artıkları
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log
+
+# Yerel geçici dosyalar
+.tmp/
+temp/

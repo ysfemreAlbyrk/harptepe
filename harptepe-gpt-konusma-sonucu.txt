@@ -1,0 +1,1379 @@
+# Canlı Krallık Simülasyonu
+## Oyun Tasarım Dokümanı — İlk Taslak
+
+**Tür:** Fiziksel rol yapma, strateji, ekonomi, diplomasi ve sosyal simülasyon  
+**Oyuncu sayısı:** Yaklaşık 60 kişi  
+**Takım sayısı:** 6 krallık  
+**Krallık başına oyuncu:** 10 kişi  
+**Moderatör sayısı:** 2–3 kişi  
+**Oyun alanı:** Yurt katı; odalar, koridorlar ve belirlenmiş ortak alanlar  
+**Dijital altyapı:** Web uygulaması veya mobil uyumlu web sitesi  
+**Temel yaklaşım:** Fiziksel etkileşim ağırlıklı, dijital sistemle desteklenen canlı bir krallık simülasyonu.
+
+---
+
+# 1. Oyunun Genel Konsepti
+
+Oyuncular altı farklı krallığa ayrılır. Her krallığın kendine ait yönetimi, kaynakları, ekonomisi, askerî gücü, dış politikası ve özel avantajları bulunur.
+
+Oyuncular yalnızca bir masada oturup karar veren kişiler olmayacaktır. Krallıkların temsilcileri diğer krallıkları ziyaret edecek, tüccarlar kaynak satacak, elçiler diplomatik görüşmeler yapacak, haberciler mesaj taşıyacak, istihbaratçılar bilgi toplayacak ve oyuncular çeşitli fiziksel görevleri yerine getirecektir.
+
+Oyunun dünyası üç temel katmandan oluşur:
+
+1. **Fiziksel dünya:** Krallık odaları, elçilik ziyaretleri, ticaret, haberleşme, keşif görevleri, müsabakalar ve yüz yüze etkileşimler.
+2. **Stratejik dünya:** Ekonomi, kaynak yönetimi, diplomasi, ittifaklar, yatırımlar, askerî güç, vergiler ve siyasi kararlar.
+3. **Dijital dünya:** Krallıkların durumunu, kaynaklarını, haritasını, anlaşmalarını ve oyun sonuçlarını yöneten web uygulaması.
+
+Dijital sistem oyunun kendisi değildir. Oyuncuların fiziksel dünyada gerçekleştirdiği eylemleri kaydeden, doğrulayan ve sonuçlarını gösteren yardımcı bir sistemdir.
+
+Oyunun en önemli özelliklerinden biri, oyuncuların kendi hikâyelerini oluşturabilmesidir. İttifaklar, ekonomik krizler, sahte mektuplar, ihanetler, ticaret anlaşmazlıkları ve siyasi mücadeleler önceden tamamen belirlenmiş olmak zorunda değildir.
+
+## 1.1. Oyunun temel hedefleri
+
+- Krallığının ekonomik gücünü geliştirmek.
+- Kaynaklarını verimli kullanmak.
+- Diğer krallıklarla ticaret yapmak.
+- Diplomatik ilişkiler kurmak.
+- İttifaklar oluşturmak ve anlaşmalar yapmak.
+- İstihbarat toplamak ve rakiplerin planlarını öğrenmek.
+- Yeni kaynaklar ve verimli topraklar keşfetmek.
+- Askerî kapasite oluşturmak.
+- Halkın memnuniyetini korumak.
+- Siyasi ve ekonomik nüfuz kazanmak.
+- Kişisel servet ve itibar elde etmek.
+
+Oyuncuların yalnızca krallıklarının çıkarlarına hizmet etmesi zorunlu değildir. Kişisel çıkarları, servetleri ve siyasi hedefleri de olabilir. Bu durum oyunun sosyal ve stratejik yönünü güçlendirir.
+
+---
+
+# 2. Fiziksel Oyun Alanı
+
+Yurdun bir katı oyun dünyası olarak kullanılacaktır.
+
+Her krallığın kendine ait bir merkezi bulunur. Bu merkezler mümkünse ayrı odalar olacaktır.
+
+## 2.1. Krallık merkezleri
+
+Her krallığın kendi odası veya belirlenmiş alanı bulunur.
+
+Bu alanlarda:
+
+- Hükümdar ve yönetim ekibi toplanır.
+- Krallığın kaynakları takip edilir.
+- Stratejik kararlar alınır.
+- Ticaret ve diplomasi planlanır.
+- Krallığın dijital cihazları kullanılır.
+- Krallığın fiziksel bayrağı veya sembolü bulundurulur.
+
+Krallık odaları oyunun yönetim merkezleridir.
+
+## 2.2. Ortak alanlar
+
+Her işlem için ayrı bir mekân oluşturulması gerekmemektedir.
+
+Örneğin:
+
+- Tüccarlar belirli bir pazar alanına bağlı kalmadan krallıkları dolaşabilir.
+- Elçiler doğrudan diğer krallıkların odalarına gider.
+- Haberciler mesajları fiziksel olarak taşır.
+- İstihbaratçılar diğer krallıkların oyuncularıyla iletişim kurar.
+- Keşif görevleri belirlenmiş odalarda veya alanlarda yapılabilir.
+- Turnuvalar ve müsabakalar ortak bir alanda düzenlenebilir.
+
+Oyuncuların sürekli hareket edebilmesi hedeflenmektedir.
+
+## 2.3. Mescit ve özel alanlar
+
+Mescit oyun alanı olarak kullanılmayacaktır. İbadet ve dinlenme alanı olarak kalacaktır.
+
+Oyun alanları ve görev noktaları önceden belirlenmeli; özel odalara izinsiz girilmemeli, kişisel eşyalara dokunulmamalı ve kapılar kilitlenmemelidir.
+
+---
+
+# 3. Krallıkların Organizasyonu ve Roller
+
+Toplam 6 krallık ve her krallıkta yaklaşık 10 oyuncu bulunacaktır.
+
+Her oyuncunun bir ana rolü olacaktır. Roller yalnızca unvanlardan ibaret kalmamalı; her oyuncu oyun sırasında karar almalı, bir eylem gerçekleştirmeli veya krallığına somut katkıda bulunmalıdır.
+
+## 3.1. Önerilen rol dağılımı
+
+| No | Rol | Temel sorumluluk |
+|---|---|---|
+| 1 | Hükümdar | Krallığın nihai kararlarını verir ve yönetimi temsil eder. |
+| 2 | Başdanışman | Stratejiyi oluşturur, yönetim ekibini koordine eder. |
+| 3 | Hazinedar | Para, gelir, gider, borç ve yatırımları yönetir. |
+| 4 | Tüccar | Krallığın kaynaklarını diğer krallıklarda satar ve ihtiyaçlarını satın alır. |
+| 5 | Dışişleri Bakanı | Diplomatik ilişkileri, ittifakları ve anlaşmaları yönetir. |
+| 6 | Elçi | Başka krallıklara giderek yüz yüze diplomatik görüşmeler gerçekleştirir. |
+| 7 | İstihbaratçı | Diğer krallıklar hakkında bilgi toplar ve rapor hazırlar. |
+| 8 | Komutan | Askerî gücü, savunmayı ve seferleri yönetir. |
+| 9 | Halk Temsilcisi | Halk memnuniyetini, vergileri ve halkın taleplerini takip eder. |
+| 10 | Serbest Görevli | Haberci, ödüllü görevler, turnuvalar ve özel görevleri üstlenir. |
+
+Bu dağılım ilk sürüm için öneridir. Oyun ilerledikçe rollerin yetkileri ve sayıları değiştirilebilir.
+
+## 3.2. Hükümdar
+
+- Krallığın nihai karar vericisidir.
+- Büyük yatırımları onaylar.
+- Savaş ve barış kararlarını verir.
+- Diplomatik anlaşmaları onaylar.
+- Vergi politikasını belirler.
+- Krallığın genel stratejisini yönetir.
+- Gerekli durumlarda yönetim ekibinin kararlarını yeniden değerlendirebilir.
+
+## 3.3. Başdanışman
+
+- Krallığın uzun vadeli stratejisini oluşturur.
+- Diğer rollerden gelen önerileri değerlendirir.
+- Kaynakların nasıl kullanılacağı konusunda öneride bulunur.
+- Krallık içindeki koordinasyonu sağlar.
+- Hükümdar bulunmadığında belirlenmiş yetkilerle vekâlet edebilir.
+
+## 3.4. Hazinedar
+
+- Krallığın para rezervini takip eder.
+- Gelir ve giderleri yönetir.
+- Vergi gelirlerini hesaplar.
+- Borç ve kredi işlemlerini takip eder.
+- Büyük yatırımların maliyetini değerlendirir.
+- Tüccarın işlemlerini mali açıdan kontrol eder.
+
+## 3.5. Tüccar
+
+Tüccar, krallığın ekonomik kaynaklarını fiziksel olarak diğer krallıklara götürerek ticaret gerçekleştirir.
+
+Örnek:
+
+Kuzey Krallığı'nın elinde 500 birim tahıl bulunmaktadır. Tüccar, bu tahılı satmak için diğer krallıkları ziyaret eder.
+
+- İlk krallık 500 tahıl için 100 altın teklif eder.
+- İkinci krallık 130 altın teklif eder.
+- Üçüncü krallık tahıl yerine 80 altın ve 50 odun önerir.
+- Tüccar teklifleri değerlendirir.
+- Yetkisi dahilinde pazarlık yapar.
+- İşlemi tamamlayıp kendi krallığına döner.
+
+Tüccarın pazarlık yetkisi bulunmalıdır. Ancak krallığın belirlediği minimum fiyatın altına inememeli veya belirlenmiş yetki sınırlarını aşamamalıdır.
+
+Büyük miktarlı alım ve satımlar ise hükümdar, hazinedar veya yetkili yönetim ekibi tarafından onaylanmalıdır.
+
+## 3.6. Dışişleri Bakanı
+
+- Diplomatik politikayı belirler.
+- Elçileri yönlendirir.
+- İttifak tekliflerini değerlendirir.
+- Saldırmazlık ve ticaret anlaşmaları hazırlar.
+- Başka krallıklarla görüşme planlar.
+- Diplomatik krizleri yönetir.
+
+## 3.7. Elçi
+
+Elçi, dışişleri bakanının belirlediği politikayı fiziksel olarak uygulayan kişidir.
+
+Örneğin:
+
+1. Kuzey Krallığı, Güney Krallığı ile ticaret anlaşması yapmak ister.
+2. Dışişleri Bakanı elçiye görüşme yetkisi verir.
+3. Elçi Güney Krallığı'nın odasına gider.
+4. Güney'in hükümdarı veya dışişleri bakanıyla görüşür.
+5. Teklifler ve karşı teklifler konuşulur.
+6. Anlaşmaya varılırsa şartlar kaydedilir.
+7. Elçi sonucu kendi krallığına bildirir.
+
+Elçi, kendisine verilen yetkinin dışında tek başına büyük anlaşmalar yapamamalıdır.
+
+## 3.8. İstihbaratçı
+
+- Diğer krallıkların ekonomik durumunu öğrenmeye çalışır.
+- Diplomatik ilişkileri takip eder.
+- İttifaklar ve askerî hazırlıklar hakkında bilgi toplar.
+- Oyuncularla sosyal ilişkiler kurar.
+- Söylentileri ve duyumları değerlendirir.
+- Krallığına rapor sunar.
+
+İstihbaratın önemli bir kısmı sosyal etkileşime dayanmalıdır. Özel odalara izinsiz girme veya gerçek eşyaları karıştırma gibi yöntemler kullanılmamalıdır.
+
+## 3.9. Komutan
+
+- Krallığın askerî gücünü yönetir.
+- Askerî kaynakları takip eder.
+- Savunma ve sefer planları oluşturur.
+- Savaş durumunda temsilcileri belirler.
+- Başka krallıklardan asker kiralanması konusunda görüşür.
+
+## 3.10. Halk Temsilcisi
+
+- Halk memnuniyetini takip eder.
+- Vergi politikalarının etkisini değerlendirir.
+- Halkın taleplerini hükümdara iletir.
+- Gerekli durumlarda halk oylaması düzenler.
+- Yüksek vergi veya ekonomik kriz gibi durumlarda halkın tepkisini temsil eder.
+
+## 3.11. Serbest Görevli
+
+Bu rol, her turda diplomasi veya ticaret yapmak istemeyen oyuncular için tasarlanmıştır.
+
+Üstlenebileceği görevler:
+
+- Haber taşımak.
+- Ödüllü görevleri tamamlamak.
+- Krallıklar arası turnuvalara katılmak.
+- Özel görevleri üstlenmek.
+- Başka krallıkların açtığı işlere başvurmak.
+- Geçici görevler veya hizmetler gerçekleştirmek.
+
+---
+
+# 4. Ekonomi ve Kaynak Sistemi
+
+Oyunun ekonomi sistemi mümkün olduğunca anlaşılır olmalıdır.
+
+Çok fazla kaynak türü, para birimi veya üretim hesabı oyuncuların oyundan kopmasına neden olabilir.
+
+Bu nedenle kaynak çeşitliliği bulunmalı ancak sayı sınırlı tutulmalıdır.
+
+## 4.1. Para birimleri
+
+Önerilen para sistemi:
+
+| Para birimi | Kullanım |
+|---|---|
+| Altın | Büyük yatırımlar, devletler arası büyük işlemler ve değerli varlıklar |
+| Gümüş | Standart ticaret, maaşlar ve orta büyüklükteki işlemler |
+| Bronz | Küçük ödemeler ve günlük işlemler |
+
+Akçe, ayrı bir metal para birimi olmak yerine para birimlerinin hesaplandığı veya fiyatların ifade edildiği bir değer birimi olarak da kullanılabilir.
+
+Örnek bir dönüşüm oranı:
+
+- 1 altın = 10 gümüş
+- 1 gümüş = 10 bronz
+
+Bu oranlar henüz kesin değildir. Oyunun başlangıç ekonomisi test edildikten sonra ayarlanmalıdır.
+
+Her krallığın başlangıç sermayesi farklı olabilir.
+
+## 4.2. Gıda kaynakları
+
+Orduyu ve nüfusu beslemek için üç veya dört temel gıda türü yeterlidir.
+
+Önerilen temel kaynaklar:
+
+| Kaynak | Kullanım |
+|---|---|
+| Buğday | Temel gıda hammaddesi |
+| Arpa | Temel gıda ve alternatif besin kaynağı |
+| Ekmek | Doğrudan tüketilebilir gıda |
+| Erzak | Depolanabilir ve genel besin rezervi |
+
+Burada çok fazla yemek türüne girilmemelidir. Kuru fasulye, cacık, pilav gibi ayrı ayrı yemeklerin oyuna eklenmesi gereksiz karmaşa oluşturacaktır.
+
+Önemli olan, gıdaların beslenme kapasitesinin farklı olmasıdır.
+
+Örneğin:
+
+- 1 birim ekmek = 1 beslenme puanı
+- 1 birim buğday = işlenerek 1 beslenme puanı
+- 1 birim arpa = 1 beslenme puanı veya farklı bir üretim karşılığı
+
+Bu değerler başlangıç örneğidir; gerçek denge testleriyle belirlenmelidir.
+
+### Gıda tüketimi
+
+Her krallığın belirli bir nüfusu ve asker sayısı vardır.
+
+Her turda:
+
+- Halkın beslenme ihtiyacı hesaplanır.
+- Ordunun beslenme ihtiyacı hesaplanır.
+- Depodaki gıdalar tüketilir.
+- Yetersiz beslenme durumunda halk memnuniyeti veya askerî kapasite düşebilir.
+
+Örneğin:
+
+Bir krallığın 100 nüfusu ve 40 askeri varsa, toplam 140 kişilik beslenme ihtiyacı hesaplanır.
+
+Bu hesaplama mümkün olduğunca basit olmalıdır. Oyuncuların her bir gıdanın ayrıntılı besin değerini hesaplaması beklenmemelidir.
+
+## 4.3. Diğer kaynaklar
+
+Ekonomi yalnızca para ve gıdadan ibaret olmamalıdır.
+
+Önerilen temel üretim kaynakları:
+
+| Kaynak | Kullanım |
+|---|---|
+| Odun | İnşaat, üretim ve bazı yatırımlar |
+| Taş | Yapılar, savunma ve altyapı |
+| Maden | Metal üretimi, askerî ekipman ve değerli yatırımlar |
+
+Bu kaynaklar krallıklar arasında eşit dağıtılmak zorunda değildir.
+
+Örneğin:
+
+- Kuzey Krallığı'nın geniş tarım alanları vardır.
+- Doğu Krallığı'nın zengin maden yatakları vardır.
+- Batı Krallığı'nın ormanları ve odun kaynakları fazladır.
+- Güney Krallığı ticaret yolları üzerinde bulunur.
+- Merkez Krallığı'nın taş ocakları ve gelişmiş altyapısı vardır.
+- Altın Krallığı'nın değerli maden rezervleri bulunur.
+
+Bu dağılım krallıklar arasında ekonomik bağımlılık oluşturur.
+
+Hiçbir krallık her kaynağa kolayca sahip olmamalıdır. Ticaretin gerekli olması için kaynakların coğrafi dağılımı önemlidir.
+
+---
+
+# 5. Krallıkların Coğrafi ve Ekonomik Farklılıkları
+
+Altı krallığın farklı özellikleri bulunmalıdır.
+
+Başlangıç için örnek bir dağılım:
+
+| Krallık | Temel avantaj | Eksik olduğu alan |
+|---|---|---|
+| Kuzey Krallığı | Tarım ve gıda üretimi | Maden |
+| Güney Krallığı | Ticaret ve ulaşım | Odun |
+| Doğu Krallığı | Maden ve metal | Gıda |
+| Batı Krallığı | Orman ve odun | Değerli maden |
+| Merkez Krallığı | Taş ve inşaat | Tarım |
+| Altın Krallığı | Altın ve finans | Temel gıda |
+
+Bu farklılıklar başlangıç kaynakları, üretim kapasitesi ve özel bonuslarla uygulanabilir.
+
+Her krallığın kendi ekonomik uzmanlığı bulunmalıdır.
+
+Amaç bir krallığın diğerlerinden kesin olarak güçlü olması değil, krallıkların birbirlerine ihtiyaç duymasıdır.
+
+---
+
+# 6. Ticaret Sistemi
+
+Ticaret oyunun en önemli fiziksel mekaniklerinden biridir.
+
+Her krallığın kendi tüccarı bulunur. Tüccar, krallığının sahip olduğu kaynakları diğer krallıklara götürerek satış yapar.
+
+## 6.1. Küçük ticaret
+
+Tüccar, belirlenmiş yetki sınırları dahilinde diğer krallıklarla doğrudan pazarlık yapabilir.
+
+Örnek:
+
+- 100 birim buğday satmak.
+- 50 birim odun satın almak.
+- Gümüş karşılığında erzak almak.
+- İki farklı kaynak arasında takas yapmak.
+
+## 6.2. Büyük ticaret
+
+Büyük miktarlı alım ve satımlar devletler arası anlaşma olarak değerlendirilir.
+
+Örneğin:
+
+- Bir krallığın yıllık gıda ihtiyacının karşılanması.
+- Büyük miktarda maden satışı.
+- Uzun vadeli odun tedariki.
+- Belirli sayıda tur boyunca devam edecek ticaret anlaşması.
+
+Bu işlemler hükümdar veya yetkili yönetim ekibinin onayını gerektirir.
+
+## 6.3. Ticaret fiyatları
+
+Fiyatlar sabit olmak zorunda değildir.
+
+Bir kaynağın fiyatını etkileyebilecek faktörler:
+
+- Kaynağın nadirliği.
+- Krallığın stok miktarı.
+- Talep.
+- Üretim kapasitesi.
+- Ambargolar.
+- Savaş veya kriz durumu.
+- Ticaret yolları.
+- Taraflar arasındaki diplomatik ilişkiler.
+
+Ancak fiyatlar için başlangıç ve referans değerler bulunmalıdır. Böylece oyuncular tamamen rastgele fiyatlarla karşılaşmaz.
+
+---
+
+# 7. Diplomasi ve Elçilik Sistemi
+
+Elçilik sistemi oyunun temel fiziksel etkileşimlerinden biridir.
+
+Her krallığın dışişleri bakanı ve elçisi bulunur.
+
+Elçi, başka krallıkların odalarına fiziksel olarak giderek görüşmeler gerçekleştirir.
+
+## 7.1. Diplomatik işlemler
+
+- İttifak kurma.
+- Saldırmazlık anlaşması.
+- Ticaret anlaşması.
+- Ortak yatırım.
+- Askerî yardım.
+- Ekonomik yardım.
+- Borç anlaşması.
+- Kaynak paylaşımı.
+- Ortak proje.
+- Barış anlaşması.
+
+## 7.2. Elçinin yetkileri
+
+Elçi, hükümdar veya dışişleri bakanı tarafından verilen yetkiyle hareket eder.
+
+Örneğin:
+
+- 100 altına kadar ticaret anlaşması yapabilir.
+- Saldırmazlık anlaşması teklif edebilir.
+- İttifak görüşmesi yapabilir ancak son onay için hükümdara danışmalıdır.
+
+Bu sistem sayesinde elçiler sürekli fiziksel olarak hareket ederken büyük kararların kontrolü krallık yönetiminde kalır.
+
+## 7.3. Diplomatik görüşmelerin işleyişi
+
+1. Elçi kendi krallığından ayrılır.
+2. Hedef krallığın odasına gider.
+3. Görüşme talebinde bulunur.
+4. Karşı taraf görüşmeyi kabul ederse müzakere başlar.
+5. Teklifler ve karşı teklifler değerlendirilir.
+6. Anlaşma sağlanırsa dijital sistemde veya fiziksel bir işlem kaydıyla onaylanır.
+7. Taraflar anlaşmanın şartlarına bağlı kalır.
+
+---
+
+# 8. Entrika, Sahte Mektup ve Casusluk
+
+Oyunun en eğlenceli mekaniklerinden biri olabilir.
+
+Oyuncuların birbirlerini kandırmaya çalışması, yanlış bilgi yayması ve gizli anlaşmalar yapması oyuna beklenmedik olaylar kazandıracaktır.
+
+## 8.1. Sahte mektup
+
+Örnek olay:
+
+- A Krallığı'ndaki bir oyuncu, B Krallığı adına C Krallığı'na sahte bir mektup hazırlar.
+- Mektupta B'nin C'ye ittifak teklif ettiği yazmaktadır.
+- Mektup bir haberciyle C'ye gönderilir.
+- C Krallığı mektuba inanabilir veya doğrulama yapmak için B'ye elçi gönderebilir.
+- B Krallığı durumdan haberdar olursa inkâr edebilir veya karşı hamle yapabilir.
+
+Sahte mektup sistemi oyuncuların güven ve doğrulama mekanizmalarını kullanmasını gerektirir.
+
+## 8.2. Diğer entrika yöntemleri
+
+- Başka bir krallığın adına söylenti yaymak.
+- Yanlış ticaret bilgisi vermek.
+- Sahte anlaşma düzenlemek.
+- Bir krallığın elçisini kendi tarafına çekmeye çalışmak.
+- Başka krallığın planları hakkında yanlış bilgi yaymak.
+- İki krallık arasındaki güveni zedelemek.
+- Çifte ajan olarak çalışmak.
+- Bir krallığın tüccarını yanlış fiyat bilgisiyle yönlendirmek.
+
+Bu mekaniklerin bazıları kurallarla sınırlandırılmalıdır.
+
+Örneğin sahte belgeler gerçek sistem kayıtlarını değiştirememeli; yalnızca oyuncuların kararlarını etkilemelidir. Resmî anlaşmalar dijital sistemde onaylanmadıkça geçerli sayılmamalıdır.
+
+---
+
+# 9. Haberci Sistemi
+
+Haberci, krallıklar arasında fiziksel mesaj taşır.
+
+Elçiden farklı olarak haberci müzakere yapmak zorunda değildir.
+
+Görevleri:
+
+- Diplomatik mesaj taşımak.
+- Acil haber ulaştırmak.
+- Ticaret tekliflerini iletmek.
+- Krallığın duyurularını taşımak.
+- Belirlenmiş bir süre içinde mesajı teslim etmek.
+
+Haberci sistemi özellikle zaman sınırlı görevlerde kullanılabilir.
+
+Örneğin:
+
+Bir krallık, başka bir krallığa 5 dakika içinde ulaşması gereken bir mesaj gönderir. Mesaj zamanında ulaşırsa belirli bir avantaj elde edilir.
+
+Mesajların gizliliği ve doğruluğu, oyunun entrika sistemiyle ilişkilendirilebilir.
+
+---
+
+# 10. İstihbarat ve Bilgi Toplama
+
+İstihbarat sistemi, oyuncuların diğer krallıklar hakkında bilgi toplamasına dayanır.
+
+İstihbaratçılar:
+
+- Diğer krallıkların kaynak durumlarını öğrenmeye çalışabilir.
+- Diplomatik ilişkileri takip edebilir.
+- Kimlerin ittifak kurduğunu araştırabilir.
+- Askerî hazırlıkları gözlemleyebilir.
+- Söylentileri değerlendirebilir.
+- Başka krallıkların oyuncularıyla ilişki kurabilir.
+
+Bilgiler kesin veya doğru olmak zorunda değildir.
+
+Bir istihbarat raporu şu şekilde olabilir:
+
+- Güney Krallığı'nın tahıl stokunun azaldığı söyleniyor.
+- Batı Krallığı'nın yeni bir ittifak aradığı duyulmuş.
+- Doğu Krallığı'nın maden üretimini artırdığı düşünülüyor.
+
+Oyuncular bilgileri doğrulamak için diplomatik görüşmeler yapabilir veya farklı kaynaklardan bilgi toplamaya çalışabilir.
+
+---
+
+# 11. Keşif ve Hazine Sandıkları
+
+Keşif sistemi, oyuna fiziksel görev ve sürpriz unsuru ekleyecektir.
+
+Bu sistemde yurdun belirlenmiş noktalarına veya kullanılabilecek odalara sandıklar yerleştirilebilir.
+
+Sandıkların içinde soru, bilmece, görev veya farklı bir keşif içeriği bulunur.
+
+## 11.1. Sandık sistemi
+
+Bir oyuncu veya ekip, keşif görevini tamamladığında sandığı açmaya hak kazanır.
+
+Sandığın içinde:
+
+- Bilgi sorusu.
+- Mantık sorusu.
+- Bilmece.
+- Küçük görev.
+- Şifreli bir soru.
+- Birden fazla aşamadan oluşan görev.
+
+bulunabilir.
+
+Soruyu doğru cevaplayan oyuncu veya krallık ödül kazanır.
+
+## 11.2. Sandıklardan çıkabilecek ödüller
+
+| Ödül | Etkisi |
+|---|---|
+| Altın | Krallığın parasına eklenir. |
+| Gümüş | Standart ekonomik kaynak kazandırır. |
+| Bronz | Küçük işlemlerde kullanılabilir. |
+| Buğday | Gıda rezervini artırır. |
+| Arpa | Gıda rezervini artırır. |
+| Ekmek | Doğrudan beslenme kaynağı sağlar. |
+| Odun | İnşaat ve üretim için kullanılır. |
+| Taş | Yapı ve altyapı için kullanılır. |
+| Maden | Üretim ve askerî yatırımlarda kullanılır. |
+| Verimli toprak | Krallığa sürekli tarımsal üretim sağlayabilir. |
+| Özel avantaj | Belirli bir süre boyunca ekonomik veya stratejik bonus sağlar. |
+
+## 11.3. Verimli toprak keşfi
+
+Bir sandıktan doğrudan para çıkmak zorunda değildir.
+
+Örneğin:
+
+Bir krallık, keşif görevini tamamlayarak verimli bir tarım alanı bulur.
+
+Bu alan sayesinde:
+
+- Her tur belirli miktarda buğday üretebilir.
+- Gıda üretim kapasitesini artırabilir.
+- Başka krallıklara gıda satabilir.
+- Ekonomik avantaj elde edebilir.
+
+Bu, tek seferlik para ödülünden daha değerli ve uzun vadeli bir kazanç olabilir.
+
+## 11.4. Keşif ödüllerinin dengelenmesi
+
+Sandıkların ödülleri tamamen rastgele olmamalıdır.
+
+Bazı sandıklar küçük, bazıları orta, bazıları büyük ödüller içermelidir.
+
+Büyük ödüller daha zor sorular veya birden fazla aşamalı görevlerle kazanılmalıdır.
+
+Keşifler krallıklar arasında rekabet oluşturabilir. Ancak her krallığın keşif fırsatlarına erişebilmesi sağlanmalıdır.
+
+---
+
+# 12. Bankacılık, Borç ve Kredi Sistemi
+
+Krallıklar her zaman istedikleri yatırımı yapacak kadar zengin olmayabilir.
+
+Bu nedenle borç ve kredi sistemi eklenebilir.
+
+Örnek:
+
+- Kuzey Krallığı, Güney Krallığı'ndan 200 altın borç alır.
+- İki taraf 3 tur sonra 250 altın ödenmesi konusunda anlaşır.
+- Kuzey ödeme yapamazsa yeni bir anlaşma yapmak zorunda kalır.
+- Güney, borç karşılığında tahıl veya ticaret ayrıcalığı isteyebilir.
+
+Bankacılık işlemleri:
+
+- Borç verme.
+- Faiz oranı belirleme.
+- Borç vadelerini takip etme.
+- Yatırım teklifleri sunma.
+- Borçların yeniden yapılandırılması.
+- Krallıklar arası kredi anlaşmaları.
+
+Bu sistemde bankacı rolü ayrı bir oyuncu olarak kullanılabilir veya hazinedarın görevleri arasına eklenebilir.
+
+---
+
+# 13. Ödül Avcılığı ve Sözleşmeli Görevler
+
+Krallıklar veya moderatörler çeşitli işler için ödül koyabilir.
+
+Örnek görevler:
+
+- Belirli bir krallıktan 100 birim tahıl satın alıp teslim etmek.
+- Üç farklı krallıktan ticaret teklifi toplamak.
+- Bir hükümdardan yazılı ittifak sözü almak.
+- Bir sonraki meclise belirli konuda üç krallığın desteğini getirmek.
+- Belirli bir kaynağı belirlenen süre içinde temin etmek.
+
+Görevleri tamamlayan oyuncular para, kaynak veya itibar kazanabilir.
+
+Bu görevleri yalnızca krallık adına değil, kişisel olarak da üstlenmek mümkün olabilir.
+
+Böylece oyuncuların kişisel ekonomik ilişkileri oluşur.
+
+---
+
+# 14. Askerî Sistem ve Savaş
+
+Savaş oyunda bulunabilir ancak oyunun tamamını ele geçirmemelidir.
+
+Ekonomi, diplomasi ve siyasi ilişkiler savaş kadar önemli olmalıdır.
+
+## 14.1. Askerî kapasite
+
+Her krallığın belirli miktarda askerî gücü bulunur.
+
+Bu güç:
+
+- Başlangıç asker sayısı.
+- Askerî yatırımlar.
+- Kaynaklar.
+- Savunma avantajları.
+- Kiralanan paralı askerler.
+
+gibi faktörlerden etkilenebilir.
+
+## 14.2. Fiziksel savaş müsabakaları
+
+Savaşlar fiziksel temas içeren gerçek çatışmalar şeklinde yapılmamalıdır.
+
+Bunun yerine temsilcilerin karşı karşıya geldiği kısa oyunlar kullanılabilir.
+
+Örnek:
+
+- Taş-kâğıt-makas.
+- Hızlı hafıza testi.
+- Basit strateji bulmacası.
+- Zar atışı.
+- Denge veya koordinasyon oyunu.
+
+İki tarafın komutanı temsilcileri belirler. Müsabakaların sonucu, krallıkların askerî gücüyle birlikte değerlendirilir.
+
+Örnek:
+
+| Değer | Kuzey | Güney |
+|---|---:|---:|
+| Askerî güç | 80 | 60 |
+| Müsabaka galibiyeti | 2 | 1 |
+| Sonuç | Kazanan | Kaybeden |
+
+Bu örnek yalnızca sistemin nasıl işleyebileceğini göstermektedir. Gerçek savaş hesaplaması daha sonra dengelenmelidir.
+
+## 14.3. Paralı askerler
+
+Bir krallık başka bir krallıktan asker kiralayabilir.
+
+Örneğin:
+
+- Batı Krallığı, Kuzey Krallığı'ndan 20 asker kiralar.
+- Belirli miktarda altın öder.
+- Askerler belirli bir süre veya sefer boyunca Batı'nın hizmetinde olur.
+
+Bağımsız paralı asker oyuncuları da oluşturulabilir.
+
+---
+
+# 15. Vergi ve Halk Memnuniyeti
+
+Her krallığın bir halkı ve nüfusu vardır.
+
+Hükümdar vergi oranlarını belirleyebilir.
+
+Örnek:
+
+| Vergi seviyesi | Gelir | Halk memnuniyeti |
+|---|---|---|
+| Düşük | Az | Yüksek |
+| Normal | Orta | Normal |
+| Yüksek | Fazla | Düşük |
+
+Yüksek vergi kısa vadede gelir sağlar ancak uzun vadede sorun oluşturabilir.
+
+Halk memnuniyeti çok düşerse:
+
+- Vergi gelirleri azalabilir.
+- Halk temsilcisi hükümdara itiraz edebilir.
+- Ekonomik protesto veya grev olayı yaşanabilir.
+- Başka krallıklara göç başlayabilir.
+- Hükümdarın siyasi itibarı düşebilir.
+
+Bu sistem hükümdarın her istediğini yapmasını engeller.
+
+---
+
+# 16. Propaganda ve Krallık Duyuruları
+
+Her krallığın kamuoyuna açıklama yapabileceği bir mekanizma bulunabilir.
+
+Örnek:
+
+- Kuzey Krallığı, bölgenin en güçlü ekonomisine sahip olduğunu ilan eder.
+- Güney Krallığı, Kuzey'in ticaret anlaşmalarına güvenilmemesi gerektiğini duyurur.
+- Batı Krallığı, üç krallıkla ittifak kurduğunu açıklar.
+
+Krallıkların duyuruları dijital sistemde veya ortak alanda gösterilebilir.
+
+Duyuruların doğru olması zorunlu değildir. Ancak yanlış bilgi yaymanın diplomatik sonuçları olabilir.
+
+Bu mekanik oyuncuların siyasi iletişim kurmasını sağlar.
+
+---
+
+# 17. Mahkeme ve Anlaşmazlık Sistemi
+
+Ticaret, borç, sahte mektup ve diplomatik anlaşmalar nedeniyle anlaşmazlıklar çıkabilir.
+
+Örnek:
+
+- Bir krallık, diğerinin anlaşmayı bozduğunu iddia eder.
+- Bir tüccar ödeme alamadığını söyler.
+- Bir elçi kendisine yanlış bilgi verildiğini iddia eder.
+- İki krallık aynı bölgenin kendilerine ait olduğunu savunur.
+
+Bu gibi durumlarda taraflar mahkemeye başvurabilir.
+
+Önerilen sistem:
+
+- Üç kişilik tarafsız bir mahkeme oluşturulur.
+- Taraflar iddialarını sunar.
+- Dijital sistemde kayıtlı anlaşmalar incelenir.
+- Mahkeme karar verir.
+
+Mahkeme üyeleri mümkünse anlaşmazlığın tarafı olmayan krallıklardan seçilmelidir.
+
+---
+
+# 18. Turnuva ve Krallıklar Arası Müsabakalar
+
+Stratejik oyuna katılmakta zorlanan oyuncuların da kendilerini gösterebilmesi için turnuvalar düzenlenebilir.
+
+Her krallık bir veya birkaç temsilci gönderir.
+
+Örnek müsabakalar:
+
+- Hafıza yarışması.
+- Kelime anlatma.
+- Sessiz sinema.
+- Hızlı çizim.
+- Denge oyunu.
+- Mantık bulmacası.
+- Takım koordinasyonu.
+- Bardak dizme.
+- Basit el becerisi oyunları.
+
+Kazanan krallık:
+
+- Altın.
+- Gümüş.
+- Kaynak.
+- İtibar.
+- Geçici avantaj.
+
+kazanabilir.
+
+Turnuvalar her turda olmak zorunda değildir. Belirli aralıklarla düzenlenebilir.
+
+---
+
+# 19. Uzman ve Oyuncu Transferi
+
+Krallıklar arasında geçici veya kalıcı uzman transferi yapılabilir.
+
+Örnek:
+
+- Bir krallığın mimara ihtiyacı vardır.
+- Başka bir krallıkta iki mimar bulunur.
+- Bir mimar belirli ücret karşılığında diğer krallığa geçici olarak çalışmaya gider.
+- Gittiği krallık o tur inşaat avantajı kazanır.
+
+Benzer şekilde:
+
+- Tüccar.
+- Diplomat.
+- Asker.
+- Bilim insanı.
+- Uzman üretici.
+
+gibi roller transfer edilebilir.
+
+Oyuncunun ana krallığı ve geçici görevlendirildiği krallık dijital sistemde ayrı tutulmalıdır.
+
+Bu mekanik oyuncuların kendi krallıklarının dışına çıkmaları için yeni sebepler oluşturur.
+
+---
+
+# 20. Yatırım ve Üretim Sistemi
+
+Krallıklar yalnızca kaynak alıp satmaz. Ellerindeki kaynakları kullanarak kalıcı avantajlar da elde edebilir.
+
+Örnek yatırımlar:
+
+| Yatırım | Örnek maliyet | Sağladığı avantaj |
+|---|---|---|
+| Çiftlik | Altın + odun | Her tur gıda üretimi |
+| Maden | Altın + taş | Her tur maden üretimi |
+| Pazar ağı | Altın | Tüccarın ticaret avantajı |
+| Kışla | Altın + odun | Askerî kapasite artışı |
+| Üniversite | Altın + taş | Araştırma avantajı |
+| Depo | Altın + odun | Kaynak depolama kapasitesi artışı |
+
+Bu yatırımlar fiziksel olarak maket yapmak zorunda değildir.
+
+Krallık odasında yatırım kararları alınır ve moderatör veya dijital sistem tarafından kaydedilir.
+
+Önemli olan, yatırımların kaynak tüketmesi ve gelecekte fayda sağlamasıdır.
+
+---
+
+# 21. Bağımsız ve Kişisel Ekonomi
+
+Oyuncular yalnızca krallıklarının emrindeki piyonlar olmamalıdır.
+
+Kişisel servet ve itibar sistemi oyuna eklenebilir.
+
+Örneğin:
+
+- Başarılı bir tüccar kişisel servet kazanabilir.
+- Bir elçi başarılı diplomatik ilişkiler kurarak itibar kazanabilir.
+- Bir oyuncu ödüllü görevleri tamamlayarak para kazanabilir.
+- Bir paralı asker kendi hizmetini satabilir.
+- Bir uzman başka krallığa geçici hizmet verebilir.
+- Bir oyuncu siyasi nüfuz kazanabilir.
+
+Bu sistemde krallığın hazinesi ile oyuncunun kişisel serveti birbirinden ayrılmalıdır.
+
+Kişisel servet krallığın kaynakları gibi doğrudan kullanılamamalıdır. Oyuncuların kendi çıkarlarını gözetebilmesi, entrika ve pazarlık sistemini güçlendirecektir.
+
+---
+
+# 22. Dijital Altyapı
+
+Oyun dijital bir sistemle desteklenecektir.
+
+Bu sistem için mobil uyumlu bir web uygulaması veya ileride geliştirilebilecek bir mobil uygulama kullanılabilir.
+
+İlk aşamada web uygulaması yeterlidir.
+
+Her krallıkta yaklaşık 4–5 telefon bulunabilir. Bu cihazlar ortak kullanıma açık olabilir veya belirli rollere tahsis edilebilir.
+
+Oyuncular yalnızca kendi rollerine uygun ekranlara ve yetkilere erişmelidir.
+
+## 22.1. Kullanıcı rolleri ve erişim yetkileri
+
+| Kullanıcı | Erişim |
+|---|---|
+| Hükümdar | Krallığın genel durumu, kararlar ve onaylar |
+| Başdanışman | Stratejik durum, krallık bilgileri ve planlar |
+| Hazinedar | Para, gelir, gider, borç ve yatırımlar |
+| Tüccar | Ticaret teklifleri, kaynak stokları ve işlemler |
+| Dışişleri Bakanı | Diplomatik ilişkiler, anlaşmalar ve elçi yetkileri |
+| Elçi | Kendisine verilen diplomatik yetkiler ve görüşmeler |
+| İstihbaratçı | Topladığı bilgiler ve istihbarat raporları |
+| Komutan | Askerî güç, savunma ve seferler |
+| Halk Temsilcisi | Nüfus, vergi ve halk memnuniyeti |
+| Serbest Görevli | Görevler, turnuvalar ve ödüller |
+
+## 22.2. Dijital sistemin temel modülleri
+
+### A. Krallık paneli
+
+- Krallığın adı.
+- Bayrağı.
+- Başlangıç kaynakları.
+- Mevcut para.
+- Gıda stokları.
+- Üretim kaynakları.
+- Nüfus.
+- Askerî güç.
+- Halk memnuniyeti.
+- Ekonomik durum.
+- Diplomatik ilişkiler.
+
+### B. Ekonomi paneli
+
+- Kaynak miktarları.
+- Gelir ve giderler.
+- Ticaret işlemleri.
+- Borçlar.
+- Yatırımlar.
+- Üretim.
+- Gıda tüketimi.
+
+### C. Ticaret paneli
+
+Tüccar:
+
+- Satışa sunulan kaynakları görebilir.
+- Teklif oluşturabilir.
+- Gelen teklifleri görüntüleyebilir.
+- Pazarlık sonucunu sisteme girebilir.
+- İşlem için gerekli onayları alabilir.
+
+### D. Diplomasi paneli
+
+- Diplomatik ilişkiler.
+- Aktif ittifaklar.
+- Saldırmazlık anlaşmaları.
+- Ticaret anlaşmaları.
+- Elçi yetkileri.
+- Bekleyen diplomatik teklifler.
+- Anlaşma geçmişi.
+
+### E. Görev paneli
+
+- Aktif görevler.
+- Ödüller.
+- Süreler.
+- Görev durumları.
+- Tamamlanan görevler.
+
+### F. Askerî panel
+
+- Asker sayısı.
+- Askerî kapasite.
+- Savunma durumu.
+- Kiralanan askerler.
+- Devam eden seferler.
+- Savaş sonuçları.
+
+### G. Moderatör paneli
+
+Moderatörler tüm krallıkların genel durumunu görebilmelidir.
+
+- Krallık kaynaklarını düzenleme.
+- Para ve kaynak ekleme veya çıkarma.
+- Yeni olay başlatma.
+- Görev oluşturma.
+- Keşif ödülü tanımlama.
+- Savaş sonucu girme.
+- Anlaşmaları doğrulama.
+- Tur başlatma ve bitirme.
+- Kaynak tüketimini hesaplama.
+- Haritayı güncelleme.
+- Oyun geçmişini inceleme.
+
+## 22.3. Yetki sistemi
+
+Her oyuncu yalnızca rolüne uygun işlemleri yapabilmelidir.
+
+Örneğin:
+
+- Tüccar kendi başına krallığın hazinesinden para çekemez.
+- Elçi hükümdar onayı olmadan büyük anlaşma yapamaz.
+- Komutan tek başına savaş ilan edemez.
+- Hazinedar onaylanmamış bir yatırımı gerçekleştiremez.
+- İstihbaratçı başka krallıkların gizli dijital bilgilerini göremez.
+
+Önemli işlemler onay mekanizmasına sahip olmalıdır.
+
+## 22.4. Fiziksel ve dijital sistemin ilişkisi
+
+Her işlem hem fiziksel hem dijital olarak gerçekleşebilir.
+
+Örnek ticaret işlemi:
+
+1. Tüccar başka krallığa gider.
+2. İki taraf yüz yüze pazarlık yapar.
+3. Anlaşma şartları belirlenir.
+4. Yetkili kişiler dijital sistemden onay verir.
+5. Kaynak ve para transferi gerçekleşir.
+6. Her iki krallığın stokları güncellenir.
+
+Böylece dijital sistem fiziksel oyunun yerine geçmez; fiziksel oyunda gerçekleşen işlemlerin güvenilir kaydını tutar.
+
+---
+
+# 23. Harita ve Projeksiyon Sistemi
+
+Oyunun dijital tarafında büyük bir krallık haritası bulunmalıdır.
+
+Projeksiyonda gösterilebilecek bilgiler:
+
+- Altı krallığın bölgeleri.
+- Krallık sınırları.
+- Tarım alanları.
+- Maden yatakları.
+- Ormanlar.
+- Taş ocakları.
+- Verimli topraklar.
+- Keşfedilmiş alanlar.
+- Krallıkların ekonomik durumu.
+- Aktif ittifaklar.
+- Savaş veya diplomatik krizler.
+
+Harita yalnızca dekoratif olmamalıdır. Kaynakların nerede bulunduğu ve hangi krallığın hangi bölgede hak sahibi olduğu stratejik sonuçlar doğurmalıdır.
+
+Yeni keşfedilen bölgeler haritaya eklenebilir.
+
+Projeksiyonda ayrıca:
+
+- Genel sıralama.
+- Krallıkların toplam serveti.
+- Askerî güç.
+- Halk memnuniyeti.
+- İtibar.
+- Güncel olaylar.
+
+gösterilebilir.
+
+---
+
+# 24. Moderatör Organizasyonu
+
+Oyunda 2–3 moderatör bulunması önerilmektedir.
+
+## 24.1. Oyun yöneticisi
+
+- Oyunun genel akışını yönetir.
+- Yeni olayları duyurur.
+- Hikâyeyi ve önemli gelişmeleri açıklar.
+- Görevleri başlatır.
+- Turun başlangıç ve bitişini belirler.
+
+## 24.2. Sistem ve ekonomi yöneticisi
+
+- Kaynakları takip eder.
+- Para ve stok işlemlerini kontrol eder.
+- Yatırımları kaydeder.
+- Üretim ve tüketim hesaplarını yapar.
+- Projeksiyondaki haritayı ve skorları günceller.
+
+## 24.3. Diplomasi ve görev yöneticisi
+
+- Elçilik işlemlerini takip eder.
+- Anlaşmaları kontrol eder.
+- Görevleri dağıtır.
+- Keşif ödüllerini yönetir.
+- Mahkeme ve anlaşmazlık süreçlerine yardımcı olur.
+
+Moderatörler oyunun bütün kararlarını kendileri vermemelidir. Oyuncuların kararlarını ve etkileşimlerini yönetmelidirler.
+
+---
+
+# 25. Örnek Bir Oyun Turu
+
+Bir turun yaklaşık 35 dakika sürmesi önerilmektedir.
+
+## 0–5 dakika: Olay duyurusu
+
+Oyun yöneticisi projeksiyonda yeni bir gelişme açıklar.
+
+Örnek:
+
+Kuzey bölgesinde verimli tarım alanları keşfedilmiştir. Bölgenin kontrolü ve kaynakları konusunda krallıklar arasında rekabet başlayabilir.
+
+## 5–12 dakika: Krallık meclisi
+
+Her krallık kendi odasında toplanır.
+
+- Hükümdar kararları değerlendirir.
+- Hazinedar ekonomik durumu açıklar.
+- Tüccar ticaret planını sunar.
+- Dışişleri Bakanı diplomatik hedefleri belirler.
+- Komutan askerî durumu değerlendirir.
+- Halk Temsilcisi halkın ihtiyaçlarını aktarır.
+
+## 12–20 dakika: Fiziksel hareketlilik
+
+- Elçiler başka krallıklara gider.
+- Tüccarlar ticaret yapar.
+- Haberciler mesaj taşır.
+- İstihbaratçılar bilgi toplar.
+- Görevli oyuncular keşif ve ödüllü görevleri gerçekleştirir.
+
+## 20–27 dakika: Büyük meclis
+
+Krallık temsilcileri ortak alanda buluşur.
+
+- Büyük anlaşmalar görüşülür.
+- Diplomatik teklifler sunulur.
+- Krallıklar ortak kararlar alabilir.
+- İhtilaflar gündeme getirilir.
+
+## 27–32 dakika: İşlemlerin tamamlanması
+
+- Ticaret işlemleri kaydedilir.
+- Anlaşmalar onaylanır.
+- Görev sonuçları teslim edilir.
+- Kaynak transferleri gerçekleştirilir.
+
+## 32–35 dakika: Sonuçlar
+
+Projeksiyonda:
+
+- Güncel harita.
+- Krallık kaynakları.
+- Ekonomik değişimler.
+- Yeni ittifaklar.
+- Görev sonuçları.
+- Önemli olaylar.
+
+açıklanır.
+
+Bu tur yapısı örnektir. Daha uzun oturumlarda fiziksel etkileşim süreleri artırılabilir.
+
+---
+
+# 26. Oyuna Eklenebilecek Diğer Mekanikler
+
+Aşağıdaki mekanikler ilk sürümde zorunlu değildir. İlerleyen aşamalarda oyuna eklenebilir.
+
+| Mekanik | Açıklama |
+|---|---|
+| Çifte ajan | Bir oyuncu başka bir krallığa bilgi sızdırabilir. |
+| Siyasi iltica | Bir oyuncu krallığını terk ederek başka bir krallığa katılabilir. |
+| Evlilik ittifakı | İki krallık sembolik hanedan anlaşması yapabilir. |
+| Ambargo | Bir krallık diğerine mal satmayı yasaklayabilir. |
+| Ekonomik yaptırım | Bir krallığın ticareti zorlaştırılabilir. |
+| Açık artırma | Kaynak veya özel avantajlar teklif usulüyle satılabilir. |
+| İhale | Bir krallık belirli bir işi yapmak için diğer krallıklara teklif açabilir. |
+| Mülteci kabulü | Ekonomik kriz yaşayan krallığın nüfusu başka krallığa taşınabilir. |
+| Bağımsız tüccar | Hiçbir krallığa bağlı olmayan oyuncular ticaret yapabilir. |
+| İsyan | Halk memnuniyeti çok düşerse siyasi kriz çıkabilir. |
+| Barış konferansı | Birden fazla krallık ortak sorun için toplanabilir. |
+| Seçim | Belirli aralıklarla hükümdar veya temsilci seçilebilir. |
+| Uzman transferi | Bir krallık başka krallıktan geçici uzman kiralayabilir. |
+| Kişisel servet | Oyuncular krallıklarından bağımsız servet biriktirebilir. |
+
+---
+
+# 27. Oyunun Denge ve Tasarım İlkeleri
+
+Oyunun başarılı olması için bazı temel prensipler korunmalıdır.
+
+## 27.1. Basit ama derin sistem
+
+- Çok fazla kaynak türü kullanılmamalıdır.
+- Para birimleri sınırlı tutulmalıdır.
+- Gıda tüketimi kolay hesaplanmalıdır.
+- Oyuncular rollerini birkaç dakika içinde anlayabilmelidir.
+- Karmaşık hesaplamalar dijital sistem tarafından yapılmalıdır.
+
+## 27.2. Kaynakların eşit dağıtılmaması
+
+Krallıkların farklı ekonomik özellikleri bulunmalıdır.
+
+Bir krallığın çok fazla buğdayı olabilir ama madeni olmayabilir. Başka bir krallığın madeni olabilir ama gıda üretimi yetersiz olabilir.
+
+Bu durum ticareti zorunlu ve anlamlı hâle getirir.
+
+## 27.3. Her oyuncunun aktif olması
+
+Hiçbir oyuncu yalnızca izleyici olarak kalmamalıdır.
+
+Her rolün:
+
+- Kendi sorumluluğu.
+- Gerçekleştireceği eylemler.
+- Alacağı kararlar.
+- Kullanabileceği yetkiler.
+- Krallığa sağlayacağı katkı.
+
+bulunmalıdır.
+
+## 27.4. Fiziksel etkileşimin önceliği
+
+Oyuncuların bütün işlemleri telefondan yapması istenmemektedir.
+
+- Elçi fiziksel olarak ziyaret yapmalıdır.
+- Tüccar krallıkları dolaşmalıdır.
+- Haberci mesaj taşımalıdır.
+- İstihbaratçı insanlarla görüşmelidir.
+- Keşif görevleri fiziksel olarak gerçekleştirilmelidir.
+- Turnuvalar yüz yüze yapılmalıdır.
+
+Telefonlar işlemleri kaydetmek ve gerekli bilgileri göstermek için kullanılmalıdır.
+
+## 27.5. Kişisel çıkar ve krallık çıkarı
+
+Oyuncular yalnızca krallıklarının çıkarlarını gözetmek zorunda kalmamalıdır.
+
+Kişisel servet, itibar ve siyasi nüfuz gibi unsurlar oyuna eklenebilir.
+
+Ancak bu sistem krallıkların tamamen kontrolsüz hâle gelmesine yol açmamalıdır.
+
+## 27.6. Güvenli fiziksel oyun
+
+- Fiziksel çatışma yapılmamalıdır.
+- Savaşlar mini oyunlarla temsil edilmelidir.
+- Koşma ve itişme gibi davranışlar engellenmelidir.
+- Özel odalara izinsiz girilmemelidir.
+- Gerçek kişisel eşyalar kullanılmamalıdır.
+- Mescit ve ibadet alanları oyun dışında tutulmalıdır.
+- Görevlerin başlangıç ve bitiş noktaları açık olmalıdır.
+
+---
+
+# 28. İlk Sürüm İçin Önerilen Mekanikler
+
+Oyunun ilk sezonunda bütün mekanikleri aynı anda kullanmak yerine temel bir paketle başlanması önerilir.
+
+## Temel sistem
+
+- 6 krallık.
+- Her krallıkta 10 oyuncu.
+- Her krallığın kendine ait merkezi.
+- 2–3 moderatör.
+- Dijital moderatör paneli.
+- Krallıkların rol bazlı telefon erişimi.
+- Projeksiyonlu harita.
+- Sınırlı para ve kaynak çeşitliliği.
+
+## Ekonomi
+
+- Altın, gümüş ve bronz.
+- Buğday, arpa, ekmek ve erzak.
+- Odun, taş ve maden.
+- Krallıkların farklı başlangıç kaynakları.
+- Tüccar ve ticaret.
+- Borç ve kredi.
+- Yatırım ve üretim.
+- Gıda tüketimi.
+
+## Diplomasi
+
+- Elçilik.
+- Ticaret anlaşmaları.
+- İttifaklar.
+- Saldırmazlık anlaşmaları.
+- Haberci.
+- Sahte mektup.
+- İstihbarat.
+- Diplomatik krizler.
+
+## Fiziksel görevler
+
+- Soru ve bilmece içeren keşif sandıkları.
+- Hazine ve kaynak ödülleri.
+- Verimli toprak keşfi.
+- Ödüllü görevler.
+- Turnuvalar.
+- Fiziksel haber taşıma.
+- Krallıklar arası ziyaretler.
+
+## Yönetim
+
+- Vergi.
+- Halk memnuniyeti.
+- Askerî güç.
+- Savaş müsabakaları.
+- Mahkeme ve anlaşmazlıklar.
+- Kişisel servet ve itibar.
+
+---
+
+# 29. Geliştirme Aşamaları
+
+Oyunu doğrudan bütün mekanikleriyle uygulamaya koymak yerine aşamalı olarak geliştirmek daha sağlıklı olacaktır.
+
+## Aşama 1 — Temel kurallar
+
+- Altı krallığın özellikleri belirlenir.
+- Başlangıç kaynakları dağıtılır.
+- Para birimleri ve dönüşüm oranları belirlenir.
+- Gıda tüketimi hesaplanır.
+- Roller ve yetkiler kesinleştirilir.
+
+## Aşama 2 — Fiziksel oyun prototipi
+
+- Krallık odaları hazırlanır.
+- Elçilik ve ticaret sistemi test edilir.
+- Haberci sistemi uygulanır.
+- Keşif sandıkları hazırlanır.
+- Birkaç örnek görev gerçekleştirilir.
+
+## Aşama 3 — Dijital altyapı
+
+- Krallık panelleri.
+- Rol bazlı kullanıcı erişimi.
+- Kaynak yönetimi.
+- Ticaret işlemleri.
+- Diplomatik anlaşmalar.
+- Moderatör paneli.
+- Projeksiyon haritası.
+
+## Aşama 4 — Denge testi
+
+Önce küçük bir grupla test yapılır.
+
+Özellikle şu konular kontrol edilir:
+
+- Bir krallık diğerlerinden çok daha güçlü hâle geliyor mu?
+- Ticaret gerçekten gerekli mi?
+- Oyuncuların hepsi aktif kalabiliyor mu?
+- Gıda tüketimi fazla karmaşık mı?
+- Elçilik sistemi yeterince hareketlilik sağlıyor mu?
+- Keşif ödülleri dengeli mi?
+- Dijital işlemler oyunu yavaşlatıyor mu?
+
+## Aşama 5 — İlk sezon
+
+Sistem dengelendikten sonra 60 kişilik oyun başlatılır.
+
+---
+
+# 30. Henüz Kesinleştirilmesi Gereken Konular
+
+Bu doküman oyunun genel tasarımını ortaya koymaktadır. Aşağıdaki konuların uygulama öncesinde netleştirilmesi gerekir.
+
+1. Oyunun toplam süresi: Tek akşam mı, birkaç hafta mı, bir aylık sezon mu?
+2. Bir oturumun süresi ve haftalık oturum sayısı.
+3. Altı krallığın kesin isimleri, coğrafi özellikleri ve özel avantajları.
+4. Başlangıç para ve kaynak miktarları.
+5. Para birimleri arasındaki dönüşüm oranları.
+6. Gıda tüketim formülü.
+7. Nüfus ve asker sayısının nasıl belirleneceği.
+8. Tüccarın pazarlık ve harcama yetkileri.
+9. Elçinin diplomatik yetki sınırları.
+10. Sahte mektupların ve entrikanın kuralları.
+11. Keşif sandıklarının sayısı ve ödül dengesi.
+12. Savaş müsabakalarının kesin kuralları.
+13. Halk memnuniyeti ve vergi sistemi.
+14. Kişisel servet ve oyuncu transferi kuralları.
+15. Dijital uygulamanın ilk sürümünde bulunacak modüller.
+
+---
+
+# Genel Tasarım Felsefesi
+
+Bu oyun, 60 kişinin altı farklı krallıkta bir araya gelerek kendi siyasi ve ekonomik dünyalarını oluşturduğu canlı bir simülasyon olmalıdır.
+
+Oyuncular yalnızca puan toplamak için değil, birbirleriyle ilişki kurmak, pazarlık yapmak, ticaret gerçekleştirmek, ittifak oluşturmak, bilgi toplamak, görevleri tamamlamak ve kendi çıkarlarını korumak için hareket etmelidir.
+
+Fiziksel dünya oyunun etkileşim alanı; dijital dünya ise oyunun kayıt, hesaplama ve yönetim altyapısıdır.
+
+Oyunun başarısı mekaniklerin çokluğundan değil, az sayıdaki mekaniklerin birbirleriyle etkileşime girmesinden gelecektir.
+
+**Temel üç sütun: Ekonomi, diplomasi ve entrika.**
+
+Keşif, savaş, sosyal görevler ve kişisel çıkarlar bu üç sütunu destekleyen mekanikler olacaktır.
