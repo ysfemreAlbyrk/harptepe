@@ -2374,3 +2374,643 @@ h3,
   background: rgba(240, 223, 189, 0.08);
   border: 1px solid rgba(240, 223, 189, 0.12);
 }
+
+/* ============================================================
+   Orta Çağ tema revizyonu: parşömen, mum mühür, demir ve ahşap
+   ============================================================ */
+:root {
+  --ink: #150d08;
+  --ink-2: #24150c;
+  --ink-3: #3a2414;
+  --paper: #261607;
+  --paper-dim: #6f5630;
+  --gold: #9b6a20;
+  --gold-bright: #c39036;
+  --copper: #8f3f24;
+  --sage: #536f39;
+  --blue: #426f83;
+  --red: #96392f;
+  --text: #2b1b0d;
+  --muted: #705b3c;
+  --line: rgba(82, 51, 22, 0.3);
+  --panel: rgba(232, 211, 162, 0.94);
+  --panel-solid: #e6d09e;
+  --parchment: #e8d3a2;
+  --parchment-light: #f4e4b8;
+  --parchment-dark: #c9ab6d;
+  --wood: #2a170c;
+  --shadow: 0 24px 60px rgba(0, 0, 0, 0.48), inset 0 0 42px rgba(116, 72, 25, 0.1);
+  font-family: "IM Fell English", Georgia, "Times New Roman", serif;
+}
+
+body {
+  color: var(--text);
+  background:
+    radial-gradient(circle at 18% 12%, rgba(143, 63, 36, 0.32), transparent 30rem),
+    radial-gradient(circle at 84% 4%, rgba(155, 106, 32, 0.22), transparent 32rem),
+    repeating-linear-gradient(90deg, rgba(255, 235, 180, 0.018) 0 2px, transparent 2px 42px),
+    linear-gradient(135deg, #100905 0%, #211209 46%, #120907 100%);
+}
+
+body::before {
+  opacity: 0.34;
+  background-image:
+    radial-gradient(circle, rgba(232, 211, 162, 0.07) 0 1px, transparent 1.4px),
+    linear-gradient(45deg, transparent 48%, rgba(232, 211, 162, 0.035) 49%, transparent 51%),
+    linear-gradient(-45deg, transparent 48%, rgba(232, 211, 162, 0.028) 49%, transparent 51%);
+  background-size: 34px 34px, 72px 72px, 72px 72px;
+}
+
+h1,
+h2,
+h3,
+.clock,
+.prestige-seal span,
+.portal-hero h1,
+.player-clock {
+  font-family: Cinzel, Georgia, "Times New Roman", serif;
+  color: var(--paper);
+  letter-spacing: 0.01em;
+}
+
+input,
+select,
+textarea {
+  color: var(--text);
+  border-color: rgba(82, 51, 22, 0.32);
+  background:
+    linear-gradient(180deg, rgba(255, 244, 211, 0.68), rgba(229, 204, 148, 0.55));
+  box-shadow: inset 0 1px 5px rgba(82, 51, 22, 0.13);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: rgba(143, 63, 36, 0.66);
+  box-shadow: 0 0 0 3px rgba(155, 106, 32, 0.18), inset 0 1px 5px rgba(82, 51, 22, 0.12);
+  background: rgba(255, 244, 211, 0.78);
+}
+
+.hero-panel,
+.event-banner,
+.kingdom-card,
+.control-dock,
+.scoreboard-panel,
+.activity-log,
+.control-section,
+.portal-hero,
+.portal-card,
+.portal-help,
+.player-header,
+.player-identity-card,
+.player-card,
+.map-detail {
+  color: var(--text);
+  border-color: rgba(82, 51, 22, 0.34);
+  background:
+    radial-gradient(circle at 18% 12%, rgba(255, 244, 211, 0.5), transparent 18rem),
+    radial-gradient(circle at 90% 92%, rgba(143, 63, 36, 0.1), transparent 18rem),
+    linear-gradient(145deg, rgba(232, 211, 162, 0.97), rgba(207, 176, 116, 0.95));
+  box-shadow: var(--shadow);
+}
+
+.hero-panel::after,
+.interactive-map::before {
+  border-color: rgba(82, 51, 22, 0.28);
+  box-shadow: inset 0 0 0 4px rgba(255, 244, 211, 0.14);
+}
+
+.time-console,
+.resource-tile,
+.kingdom-metrics > div,
+.building-preview,
+.agreement-card,
+.score-row,
+.log-entry,
+.chest-card,
+.spoils-box,
+.war-side,
+.empty-state,
+.secret-objective-box,
+.player-resource-list > div,
+.map-resource-row .mini-resource,
+.leader-badge,
+.network-pill,
+.mini-resource input {
+  color: var(--text);
+  border-color: rgba(82, 51, 22, 0.22);
+  background: rgba(255, 244, 211, 0.32);
+}
+
+.primary-button {
+  color: #fff0c8;
+  border: 1px solid rgba(76, 31, 15, 0.5);
+  background:
+    linear-gradient(145deg, #b54f2e, #7d2d1d 58%, #5e1f14);
+  box-shadow: inset 0 1px 0 rgba(255, 226, 155, 0.25), 0 10px 24px rgba(70, 23, 11, 0.3);
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.36);
+}
+
+.primary-button:hover:not(:disabled) {
+  box-shadow: inset 0 1px 0 rgba(255, 226, 155, 0.3), 0 14px 28px rgba(70, 23, 11, 0.38);
+}
+
+.ghost-button,
+.projection-button,
+.minute-jumps button,
+.tax-row button,
+.agreement-actions button,
+.chest-card button {
+  color: var(--text);
+  border-color: rgba(82, 51, 22, 0.28);
+  background: rgba(255, 244, 211, 0.27);
+}
+
+.ghost-button:hover:not(:disabled),
+.projection-button:hover,
+.minute-jumps button:hover,
+.tax-row button:hover:not(:disabled),
+.agreement-actions button:hover,
+.chest-card button:hover {
+  border-color: rgba(143, 63, 36, 0.48);
+  background: rgba(255, 244, 211, 0.48);
+}
+
+.selected-choice,
+.tax-row .selected-choice,
+.agreement-actions .selected-choice,
+.panel-tabs .active-tab {
+  color: #fff0c8 !important;
+  border-color: rgba(76, 31, 15, 0.5) !important;
+  background: linear-gradient(135deg, #a8482b, #762b1b) !important;
+}
+
+.eyebrow {
+  color: #87411f;
+  letter-spacing: 0.18em;
+}
+
+.hero-subtitle,
+.phase-description,
+.event-banner p:last-child,
+.board-heading > p,
+.portal-hero p,
+.portal-card p,
+.portal-help li,
+.player-header p,
+.player-identity-card p,
+.player-score-line,
+.role-guide-card ul,
+.secret-objective-box p,
+.muted-note,
+.map-detail-facts,
+.kingdom-special,
+.building-preview span,
+.building-preview small {
+  color: var(--muted);
+}
+
+.phase-chip,
+.round-chip,
+.count-pill,
+.valid-pill,
+.level-pill {
+  color: #fff0c8;
+  border-color: rgba(76, 31, 15, 0.36);
+  background: linear-gradient(135deg, #9b6a20, #704515);
+}
+
+.round-chip {
+  background: linear-gradient(135deg, #426f83, #294753);
+}
+
+.clock {
+  color: #5e1f14;
+  text-shadow: 0 1px 0 rgba(255, 244, 211, 0.55);
+}
+
+.phase-progress {
+  background: rgba(82, 51, 22, 0.17);
+}
+
+.phase-progress span {
+  background: linear-gradient(90deg, #7d2d1d, #c39036);
+  box-shadow: 0 0 12px rgba(155, 106, 32, 0.34);
+}
+
+.sigil {
+  border-radius: 50% 46% 52% 48%;
+  border-color: rgba(76, 31, 15, 0.48);
+  background:
+    radial-gradient(circle at 32% 24%, rgba(255, 226, 155, 0.22), transparent 30%),
+    linear-gradient(145deg, #a8482b, #651f13);
+  box-shadow: inset 0 0 18px rgba(48, 12, 5, 0.42), 0 12px 26px rgba(0, 0, 0, 0.28);
+}
+
+.sigil span {
+  border-color: #f1d48b;
+  box-shadow: 0 0 0 7px rgba(241, 212, 139, 0.13), 0 0 18px rgba(241, 212, 139, 0.22);
+}
+
+.hero-brand h1,
+.portal-hero h1 {
+  color: #3a1f0d;
+  text-shadow: 0 1px 0 rgba(255, 244, 211, 0.56);
+}
+
+.hero-side,
+.time-console,
+.control-dock,
+.portal-card,
+.player-card {
+  scrollbar-color: rgba(143, 63, 36, 0.42) transparent;
+}
+
+.panel-tabs {
+  border-bottom-color: rgba(82, 51, 22, 0.25);
+  background: rgba(213, 188, 131, 0.96);
+}
+
+.panel-tabs button {
+  color: var(--muted);
+}
+
+.panel-tabs button:hover {
+  color: var(--text);
+  background: rgba(255, 244, 211, 0.35);
+}
+
+.board-heading h2 {
+  color: var(--parchment-light);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.38);
+}
+
+.board-heading > p {
+  color: rgba(244, 228, 184, 0.72);
+}
+
+.leader-badge {
+  background: rgba(255, 244, 211, 0.28);
+}
+
+.leader-badge strong {
+  color: #7d2d1d;
+}
+
+.score-row summary {
+  color: var(--text);
+}
+
+.score-row summary strong,
+.score-breakdown,
+.rank-number {
+  color: var(--paper);
+}
+
+.score-resources,
+.agreement-main p,
+.agreement-card small,
+.log-entry,
+.chest-card p,
+.chest-status,
+.empty-state {
+  color: var(--muted);
+}
+
+.score-row[open],
+.agreement-card,
+.chest-card,
+.log-entry {
+  box-shadow: inset 0 1px 0 rgba(255, 244, 211, 0.18);
+}
+
+.objective-complete,
+.log-success {
+  color: #3f682f;
+}
+
+.objective-hidden,
+.log-warning,
+.inline-warning {
+  color: #8c5b17;
+}
+
+.negative-line,
+.log-danger,
+.danger-outline {
+  color: #8f3029;
+}
+
+.network-pill {
+  background: rgba(255, 244, 211, 0.26);
+}
+
+.network-bağlı {
+  color: #3f682f;
+}
+
+.network-bağlanıyor {
+  color: #8c5b17;
+}
+
+.network-kopuk {
+  color: #8f3029;
+}
+
+/* Orta Çağ haritası */
+.interactive-map {
+  border-color: rgba(82, 51, 22, 0.38);
+  background:
+    radial-gradient(circle at 50% 46%, rgba(112, 137, 72, 0.28), transparent 28%),
+    radial-gradient(circle at 19% 43%, rgba(70, 116, 69, 0.28), transparent 20%),
+    radial-gradient(circle at 82% 43%, rgba(91, 113, 119, 0.25), transparent 19%),
+    radial-gradient(circle at 50% 14%, rgba(164, 150, 74, 0.22), transparent 20%),
+    radial-gradient(circle at 68% 81%, rgba(151, 103, 47, 0.24), transparent 22%),
+    linear-gradient(145deg, #dfc997 0%, #cfb377 48%, #dfca98 100%);
+  box-shadow: var(--shadow);
+}
+
+.interactive-map::after {
+  opacity: 0.24;
+  background-image:
+    radial-gradient(circle, rgba(82, 51, 22, 0.2) 0 0.8px, transparent 1.2px),
+    linear-gradient(35deg, transparent 48%, rgba(82, 51, 22, 0.08) 49%, transparent 51%);
+  background-size: 28px 28px, 86px 86px;
+  mix-blend-mode: multiply;
+}
+
+.map-road {
+  stroke: rgba(83, 52, 24, 0.42);
+  stroke-width: 0.75;
+  stroke-dasharray: 1.4 1.4;
+}
+
+.map-river {
+  stroke: rgba(66, 111, 131, 0.44);
+  stroke-width: 3.5;
+}
+
+.map-coast {
+  stroke: rgba(66, 111, 131, 0.24);
+}
+
+.landmark-mountain {
+  opacity: 0.42;
+  background: linear-gradient(145deg, rgba(88, 75, 59, 0.38), rgba(82, 51, 22, 0.12));
+}
+
+.landmark-forest {
+  opacity: 0.5;
+  filter: sepia(0.5) saturate(0.8);
+}
+
+.landmark-harbor {
+  border-bottom-color: rgba(66, 111, 131, 0.42);
+}
+
+.map-kingdom {
+  color: var(--text);
+  border-color: color-mix(in srgb, var(--kingdom-color) 58%, #5c3518 42%);
+  background:
+    radial-gradient(circle at 30% 0%, rgba(255, 244, 211, 0.5), transparent 70%),
+    linear-gradient(145deg, rgba(232, 211, 162, 0.95), rgba(199, 166, 103, 0.94));
+  box-shadow: 0 12px 26px rgba(54, 30, 10, 0.32), inset 0 0 0 1px rgba(255, 244, 211, 0.18);
+}
+
+.map-kingdom:hover,
+.map-kingdom.selected {
+  border-color: color-mix(in srgb, var(--kingdom-color) 70%, #5c3518 30%);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--kingdom-color) 24%, transparent), 0 16px 32px rgba(54, 30, 10, 0.4);
+}
+
+.map-kingdom-label small,
+.map-kingdom-stats em {
+  color: var(--muted);
+}
+
+.map-kingdom-label strong {
+  color: var(--paper);
+}
+
+.map-kingdom-stats {
+  border-top-color: rgba(82, 51, 22, 0.18);
+}
+
+.map-kingdom-stats b {
+  color: #7d2d1d;
+}
+
+.map-keep {
+  border-color: color-mix(in srgb, var(--kingdom-color) 62%, #5c3518 38%);
+  background: rgba(255, 244, 211, 0.24);
+}
+
+.map-chest {
+  color: #fff0c8;
+  background: #695138;
+  border: 1px solid rgba(82, 51, 22, 0.45);
+}
+
+.chest-available {
+  color: #3a1f0d;
+  background: linear-gradient(135deg, #d7ad4a, #9b6a20);
+}
+
+.chest-claimed {
+  color: rgba(255, 240, 200, 0.68);
+  background: #514435;
+}
+
+.map-detail {
+  color: var(--text);
+}
+
+.map-detail-heading h3,
+.map-detail-heading > strong {
+  color: #5e1f14;
+}
+
+.map-detail-facts {
+  color: var(--muted);
+}
+
+.resource-food strong,
+.mini-resource.resource-food span {
+  color: #806010;
+}
+
+.resource-wood strong,
+.mini-resource.resource-wood span {
+  color: #3f682f;
+}
+
+.resource-stone strong,
+.mini-resource.resource-stone span {
+  color: #4f5359;
+}
+
+.resource-ore strong,
+.mini-resource.resource-ore span {
+  color: #365f7d;
+}
+
+.resource-gold strong,
+.mini-resource.resource-gold span {
+  color: #8a5c12;
+}
+
+.prestige-seal {
+  border-color: rgba(143, 63, 36, 0.42);
+  background: rgba(255, 244, 211, 0.28);
+}
+
+.prestige-seal span {
+  color: #7d2d1d;
+}
+
+.prestige-seal small,
+.kingdom-metrics span,
+.resource-tile span,
+.player-resource-list span,
+.secret-objective-box span {
+  color: var(--muted);
+}
+
+.kingdom-card,
+.portal-card,
+.player-card,
+.control-section {
+  position: relative;
+}
+
+.kingdom-card::after,
+.control-section::after {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border: 1px solid rgba(82, 51, 22, 0.12);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.portal-card h2,
+.portal-help h2,
+.player-card h2,
+.section-heading h3,
+.control-section h3,
+.scoreboard-panel h3,
+.activity-log h3 {
+  color: #3a1f0d;
+}
+
+.portal-selects span,
+.player-identity-card label span,
+.field > span,
+.setup-subsection h4 {
+  color: #784c22;
+}
+
+.player-score-line strong,
+.player-resource-list strong,
+.map-resource-row strong {
+  color: var(--paper);
+}
+
+.secret-objective-box {
+  background: rgba(155, 106, 32, 0.11);
+  border-color: rgba(143, 63, 36, 0.24);
+}
+
+.secret-objective-box strong {
+  color: #7d2d1d;
+}
+
+.role-guide-card h3 {
+  color: #87411f;
+}
+
+.portal-help code {
+  color: #7d2d1d;
+  background: rgba(255, 244, 211, 0.45);
+  border-color: rgba(82, 51, 22, 0.22);
+}
+
+.building-strip span {
+  color: #4c3a22;
+  background: rgba(155, 106, 32, 0.1);
+  border-color: rgba(155, 106, 32, 0.18);
+}
+
+hr,
+.setup-subsection {
+  border-color: rgba(82, 51, 22, 0.16);
+}
+
+/* Orta Çağ düzen son ayarları */
+.main-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(410px, 0.42fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.board-column {
+  display: grid;
+  gap: 18px;
+  align-content: start;
+  min-width: 0;
+}
+
+.board-area,
+.control-dock,
+.bottom-grid {
+  grid-area: auto;
+}
+
+@media (max-width: 1380px) {
+  .main-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.portal-hero {
+  position: relative;
+}
+
+.portal-hero::after {
+  content: "";
+  position: absolute;
+  right: clamp(34px, 7vw, 110px);
+  top: 50%;
+  width: min(310px, 28vw);
+  aspect-ratio: 1;
+  transform: translateY(-50%);
+  border: 2px solid rgba(125, 45, 29, 0.28);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, transparent 0 28%, rgba(125, 45, 29, 0.24) 29% 30%, transparent 31% 47%, rgba(125, 45, 29, 0.2) 48% 49%, transparent 50%),
+    conic-gradient(from 0deg, transparent 0deg 42deg, rgba(125, 45, 29, 0.2) 42deg 48deg, transparent 48deg 132deg, rgba(125, 45, 29, 0.2) 132deg 138deg, transparent 138deg 222deg, rgba(125, 45, 29, 0.2) 222deg 228deg, transparent 228deg 312deg, rgba(125, 45, 29, 0.2) 312deg 318deg, transparent 318deg),
+    radial-gradient(circle, rgba(155, 106, 32, 0.16), transparent 66%);
+  opacity: 0.72;
+  pointer-events: none;
+}
+
+.portal-hero::before {
+  content: "";
+  position: absolute;
+  right: calc(clamp(34px, 7vw, 110px) + min(155px, 14vw));
+  top: 50%;
+  width: 2px;
+  height: min(230px, 21vw);
+  transform: translate(-50%, -50%) rotate(45deg);
+  background: linear-gradient(180deg, transparent, rgba(125, 45, 29, 0.34), transparent);
+  box-shadow: 0 0 0 1px rgba(255, 244, 211, 0.12);
+  pointer-events: none;
+}
+
+@media (max-width: 900px) {
+  .portal-hero::after,
+  .portal-hero::before {
+    opacity: 0.22;
+  }
+}
