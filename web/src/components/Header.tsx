@@ -16,31 +16,35 @@ export function Header({ state, phase, dispatch, projectionMode, onToggleProject
   const upcoming = nextPhase(state.elapsedSeconds);
 
   return (
-    <header className="hero-panel">
-      <div className="hero-brand">
+    <header className="war-hud">
+      <div className="hud-faction-plate">
         <div className="sigil" aria-hidden="true">
           <span />
         </div>
-        <div>
-          <p className="eyebrow">Harptepe canlı oyun sistemi</p>
+        <div className="hud-title-block">
+          <span className="hud-kicker">Harptepe sefer kaydı</span>
           <h1>Krallık Simülasyonu</h1>
-          <p className="hero-subtitle">Ekonomi, diplomasi ve entrika için moderatör komuta ekranı</p>
+          <p>{projectionMode ? 'Salon için canlı sefer haritası' : 'Moderatör savaş meclisi'}</p>
         </div>
       </div>
 
-      <div className="time-console">
-        <div className="phase-row">
-          <span className="phase-chip">{phase.label}</span>
-          {phase.round ? <span className="round-chip">Tur {phase.round}</span> : null}
+      <div className="hud-time-command">
+        <div className="phase-plaque">
+          <span>Faza</span>
+          <strong>{phase.label}</strong>
+          {phase.round ? <em>{phase.round}. tur</em> : <em>Hazırlık</em>}
         </div>
-        <div className="clock" aria-label="Oyun saati">
-          {formatGameClock(state.elapsedSeconds)}
+
+        <div className="clock-plaque" aria-label="Oyun saati">
+          <span>Sefer saati</span>
+          <strong className="clock">{formatGameClock(state.elapsedSeconds)}</strong>
+          <div className="phase-progress" aria-hidden="true">
+            <span style={{ width: `${progress * 100}%` }} />
+          </div>
+          <p className="phase-description">{phase.description}</p>
         </div>
-        <div className="phase-progress" aria-hidden="true">
-          <span style={{ width: `${progress * 100}%` }} />
-        </div>
-        <p className="phase-description">{phase.description}</p>
-        <div className="timer-actions">
+
+        <div className="command-actions" aria-label="Zaman komutları">
           <button className="primary-button" type="button" onClick={() => dispatch({ type: 'toggleTimer' })}>
             {state.timerRunning ? 'Duraklat' : 'Başlat'}
           </button>
@@ -50,26 +54,15 @@ export function Header({ state, phase, dispatch, projectionMode, onToggleProject
               type="button"
               onClick={() => dispatch({ type: 'skipToMinute', minute: upcoming.startMinute })}
             >
-              Sonraki faza geç
+              Sonraki faz
             </button>
           ) : null}
-          <button
-            className="ghost-button danger-outline"
-            type="button"
-            onClick={() => {
-              if (window.confirm('Tüm oyun verisi sıfırlanacak. Emin misiniz?')) {
-                dispatch({ type: 'resetGame' });
-              }
-            }}
-          >
-            Sıfırla
-          </button>
         </div>
       </div>
 
-      <div className="hero-side">
+      <div className="hud-side-console">
         <button className="projection-button" type="button" onClick={onToggleProjection}>
-          {projectionMode ? 'Yönetim görünümü' : 'Projeksiyon görünümü'}
+          {projectionMode ? 'Yönetim' : 'Projeksiyon'}
         </button>
         <div className="minute-jumps" aria-label="Hızlı zaman seçimi">
           {[43, 65, 87, 107].map((minute) => (
@@ -78,6 +71,17 @@ export function Header({ state, phase, dispatch, projectionMode, onToggleProject
             </button>
           ))}
         </div>
+        <button
+          className="ghost-button danger-outline reset-button"
+          type="button"
+          onClick={() => {
+            if (window.confirm('Tüm oyun verisi sıfırlanacak. Emin misiniz?')) {
+              dispatch({ type: 'resetGame' });
+            }
+          }}
+        >
+          Sıfırla
+        </button>
       </div>
     </header>
   );

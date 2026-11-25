@@ -17,10 +17,10 @@ import { calculateKingdomScore, getKingdomDefinition, sortedKingdomIds } from '.
 type PanelTab = 'operations' | 'agreements' | 'events';
 type ViewMode = 'portal' | 'moderator' | 'projection' | 'player';
 
-const tabLabels: Record<PanelTab, string> = {
-  operations: 'Operasyon',
-  agreements: 'Tescil',
-  events: 'Keşif & Savaş',
+const tabLabels: Record<PanelTab, { title: string; seal: string; hint: string }> = {
+  operations: { title: 'Hazine', seal: 'I', hint: 'üretim, vergi ve yapı' },
+  agreements: { title: 'Tescil', seal: 'II', hint: 'ferman ve anlaşmalar' },
+  events: { title: 'Sefer', seal: 'III', hint: 'keşif, turnuva ve savaş' },
 };
 
 function validKingdom(value: string | null): KingdomId {
@@ -126,48 +126,62 @@ export default function App() {
         onToggleProjection={() => navigate(projectionMode ? 'moderator' : 'projection')}
       />
 
-      <section className="event-banner">
-        <div>
-          <p className="eyebrow">Aktif olay</p>
-          <h2>{event?.title ?? 'Hazırlık'}</h2>
-          <p>{event?.description ?? 'Oyun başlamadan önce krallıklar ve roller hazırlanır.'}</p>
-        </div>
-        <div className="event-side-stack">
-          <span className={`network-pill network-${networkStatus}`}>Ağ: {networkStatus}</span>
-          <div className="leader-badge">
-            <span>Canlı lider</span>
-            <strong>{leaderLabel}</strong>
-          </div>
-        </div>
-      </section>
-
-      <main className="main-layout">
-        <div className="board-column">
-          <section className="board-area" aria-label="Krallık haritası">
-            <div className="board-heading">
+      <main className="main-layout war-room-layout">
+        <div className="board-column campaign-stage">
+          <section className="board-area war-table" aria-label="Krallık haritası">
+            <div className="board-heading map-caption">
               <div>
-                <p className="eyebrow">Altı krallık</p>
-                <h2>İnteraktif güç haritası</h2>
+                <p className="eyebrow">Sefer haritası</p>
+                <h2>Altı krallığın güç dengesi</h2>
               </div>
-              <p>Krallık mühürlerine dokunarak kaynak, üretim, vergi ve yapı detayını incele.</p>
+              <p>Komuta masasındaki mühürlere dokun; seçili krallık kaydı haritanın üzerinde açılır.</p>
             </div>
-            <InteractiveMap state={state} round={operationalRound} selectedKingdom={selectedKingdom} onSelect={setSelectedKingdom} />
+
+            <section className="event-banner campaign-notice">
+              <div>
+                <p className="eyebrow">Aktif olay</p>
+                <h2>{event?.title ?? 'Hazırlık'}</h2>
+                <p>{event?.description ?? 'Oyun başlamadan önce krallıklar ve roller hazırlanır.'}</p>
+              </div>
+              <div className="event-side-stack">
+                <span className={`network-pill network-${networkStatus}`}>Ağ: {networkStatus}</span>
+                <div className="leader-badge">
+                  <span>Canlı lider</span>
+                  <strong>{leaderLabel}</strong>
+                </div>
+              </div>
+            </section>
+
+            <div className="map-frame">
+              <InteractiveMap state={state} round={operationalRound} selectedKingdom={selectedKingdom} onSelect={setSelectedKingdom} />
+            </div>
           </section>
 
           {!projectionMode ? (
-            <div className="bottom-grid">
-              <Scoreboard state={state} revealSecrets />
-              <ActivityLog state={state} dispatch={dispatch} />
-            </div>
+            <details className="ledger-drawer" open>
+              <summary>
+                <span>Meclis kayıtları</span>
+                <small>Prestij tablosu ve moderatör işlem günlüğü</small>
+              </summary>
+              <div className="bottom-grid ledger-grid">
+                <Scoreboard state={state} revealSecrets />
+                <ActivityLog state={state} dispatch={dispatch} />
+              </div>
+            </details>
           ) : null}
         </div>
 
-        <aside className="control-dock" aria-label="Moderatör kontrolleri">
+        <aside className="control-dock council-dock" aria-label="Moderatör kontrolleri">
           {projectionMode ? (
             <Scoreboard state={state} expandFirst={false} />
           ) : (
             <>
-              <nav className="panel-tabs" aria-label="Moderatör paneli">
+              <div className="council-dock-heading">
+                <p className="eyebrow">Moderatör meclisi</p>
+                <h2>Komuta masası</h2>
+                <span>{getKingdomDefinition(selectedKingdom).name} seçili</span>
+              </div>
+              <nav className="panel-tabs council-tabs" aria-label="Moderatör paneli">
                 {(Object.keys(tabLabels) as PanelTab[]).map((tab) => (
                   <button
                     key={tab}
@@ -175,7 +189,11 @@ export default function App() {
                     className={activeTab === tab ? 'active-tab' : ''}
                     onClick={() => setActiveTab(tab)}
                   >
-                    {tabLabels[tab]}
+                    <span className="tab-seal">{tabLabels[tab].seal}</span>
+                    <span className="tab-copy">
+                      <strong>{tabLabels[tab].title}</strong>
+                      <small>{tabLabels[tab].hint}</small>
+                    </span>
                   </button>
                 ))}
               </nav>

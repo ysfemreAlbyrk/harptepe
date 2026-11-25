@@ -14,64 +14,74 @@ export function PortalView({ networkStatus, onEnterModerator, onEnterProjection,
   const [roleId, setRoleId] = useState<PlayerRoleId>('monarch');
 
   return (
-    <main className="portal-shell">
-      <section className="portal-hero">
-        <div className="sigil" aria-hidden="true"><span /></div>
-        <p className="eyebrow">Harptepe canlı oyun sistemi</p>
-        <h1>Krallık Simülasyonu</h1>
-        <p>
-          Ekonomi, diplomasi ve entrikanın aynı masada buluştuğu 120 dakikalık canlı oyun için giriş kapısı.
-          Moderatör oyunu yönetir, projeksiyon salonu bilgilendirir, oyuncu ekranı ise rolüne göre yol gösterir.
-        </p>
+    <main className="portal-shell main-menu-shell">
+      <section className="portal-title-plaque">
+        <div className="portal-title-copy">
+          <div className="sigil" aria-hidden="true"><span /></div>
+          <div>
+            <p className="eyebrow">Harptepe canlı oyun sistemi</p>
+            <h1>Krallık Simülasyonu</h1>
+            <p>
+              Altı krallık, tek masa ve 120 dakika: vergilerini topla, pazarlık masasına otur,
+              keşif sandıklarını aç ve taç oylamasına kadar ayakta kal.
+            </p>
+          </div>
+        </div>
         <span className={`network-pill network-${networkStatus}`}>Ağ durumu: {networkStatus}</span>
       </section>
 
-      <section className="portal-grid" aria-label="Giriş seçenekleri">
-        <article className="portal-card moderator-card">
-          <p className="eyebrow">Oyun yönetimi</p>
-          <h2>Moderatör girişi</h2>
-          <p>Kaynakları, üretimi, anlaşmaları, savaşları, keşifleri ve skoru yöneten tam yetkili komuta ekranı.</p>
-          <button className="primary-button" type="button" onClick={onEnterModerator}>Moderatör olarak gir</button>
-        </article>
+      <div className="menu-war-table">
+        <section className="portal-grid menu-cards" aria-label="Giriş seçenekleri">
+          <article className="portal-card menu-card player-menu-card">
+            <span className="menu-card-index">I</span>
+            <p className="eyebrow">Oyuncu görünümü</p>
+            <h2>Sefer katılım fermanı</h2>
+            <p>Krallığını ve meclisteki rolünü seç; görevlerini, kaynaklarını ve canlı savaş haritasını takip et.</p>
+            <div className="portal-selects">
+              <label>
+                <span>Krallık</span>
+                <select value={kingdomId} onChange={(event) => setKingdomId(event.target.value as KingdomId)}>
+                  {KINGDOMS.map((kingdom) => <option key={kingdom.id} value={kingdom.id}>{kingdom.name} · {kingdom.epithet}</option>)}
+                </select>
+              </label>
+              <label>
+                <span>Rol</span>
+                <select value={roleId} onChange={(event) => setRoleId(event.target.value as PlayerRoleId)}>
+                  {PLAYER_ROLES.map((role) => <option key={role.id} value={role.id}>{role.name}</option>)}
+                </select>
+              </label>
+            </div>
+            <button className="primary-button" type="button" onClick={() => onEnterPlayer(kingdomId, roleId)}>Oyuna katıl</button>
+          </article>
 
-        <article className="portal-card player-card">
-          <p className="eyebrow">Oyuncu görünümü</p>
-          <h2>Role göre gir</h2>
-          <p>Krallığını ve rolünü seç; görevlerini, canlı kaynak durumunu ve tur bilgisini salt okunur gör.</p>
-          <div className="portal-selects">
-            <label>
-              <span>Krallık</span>
-              <select value={kingdomId} onChange={(event) => setKingdomId(event.target.value as KingdomId)}>
-                {KINGDOMS.map((kingdom) => <option key={kingdom.id} value={kingdom.id}>{kingdom.name} · {kingdom.epithet}</option>)}
-              </select>
-            </label>
-            <label>
-              <span>Rol</span>
-              <select value={roleId} onChange={(event) => setRoleId(event.target.value as PlayerRoleId)}>
-                {PLAYER_ROLES.map((role) => <option key={role.id} value={role.id}>{role.name}</option>)}
-              </select>
-            </label>
-          </div>
-          <button className="primary-button" type="button" onClick={() => onEnterPlayer(kingdomId, roleId)}>Oyuncu olarak gir</button>
-        </article>
+          <article className="portal-card menu-card moderator-menu-card">
+            <span className="menu-card-index">II</span>
+            <p className="eyebrow">Oyun yönetimi</p>
+            <h2>Moderatör komuta masası</h2>
+            <p>Üretim, vergi, ticaret, anlaşma, keşif ve savaş sonuçlarını tek komuta panelinden yönet.</p>
+            <button className="primary-button" type="button" onClick={onEnterModerator}>Komuta masasını aç</button>
+          </article>
 
-        <article className="portal-card projection-card">
-          <p className="eyebrow">Salon ekranı</p>
-          <h2>Projeksiyon</h2>
-          <p>Harita, liderlik ve canlı skor odaklı sade görünüm. Yönetim butonları oyunculardan gizlenir.</p>
-          <button className="ghost-button" type="button" onClick={onEnterProjection}>Projeksiyonu aç</button>
-        </article>
-      </section>
+          <article className="portal-card menu-card projection-menu-card">
+            <span className="menu-card-index">III</span>
+            <p className="eyebrow">Salon ekranı</p>
+            <h2>Projeksiyon çadırı</h2>
+            <p>Harita ve canlı prestij sıralaması odaklı, yönetim düğmelerinden arındırılmış seyirci görünümü.</p>
+            <button className="ghost-button" type="button" onClick={onEnterProjection}>Projeksiyonu aç</button>
+          </article>
+        </section>
 
-      <section className="portal-help">
-        <h2>Oyuncular nasıl girer?</h2>
-        <ol>
-          <li>Moderatör bilgisayarında <code>npm start</code> çalıştırılır; uygulama ve senkronizasyon 8787 portunda açılır.</li>
-          <li>Oyuncular aynı yerel ağa bağlanır ve moderatörün paylaştığı IP adresini 8787 portuyla tarayıcıya yazar.</li>
-          <li>Açılan giriş ekranından krallık ve rol seçilir.</li>
-          <li>Oyuncu ekranı salt okunurdur; kaynak ve puan işlemleri moderatör tarafından işlenir.</li>
-        </ol>
-      </section>
+        <aside className="portal-help menu-chronicle">
+          <p className="eyebrow">Bağlantı emri</p>
+          <h2>Oyuncular nasıl girer?</h2>
+          <ol>
+            <li>Moderatör bilgisayarında <code>npm start</code> çalıştırılır; uygulama 8787 portunda açılır.</li>
+            <li>Oyuncular aynı yerel ağa bağlanır ve moderatörün paylaştığı IP adresini tarayıcıya yazar.</li>
+            <li>Açılan kapı ekranından krallık ve rol seçilir.</li>
+            <li>Oyuncu ekranı salt okunurdur; kaynak ve puan işlemleri moderatör tarafından işlenir.</li>
+          </ol>
+        </aside>
+      </div>
     </main>
   );
 }
