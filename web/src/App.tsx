@@ -142,16 +142,25 @@ export default function App() {
       </section>
 
       <main className="main-layout">
-        <section className="board-area" aria-label="Krallık haritası">
-          <div className="board-heading">
-            <div>
-              <p className="eyebrow">Altı krallık</p>
-              <h2>İnteraktif güç haritası</h2>
+        <div className="board-column">
+          <section className="board-area" aria-label="Krallık haritası">
+            <div className="board-heading">
+              <div>
+                <p className="eyebrow">Altı krallık</p>
+                <h2>İnteraktif güç haritası</h2>
+              </div>
+              <p>Krallık mühürlerine dokunarak kaynak, üretim, vergi ve yapı detayını incele.</p>
             </div>
-            <p>Krallık mühürlerine dokunarak kaynak, üretim, vergi ve yapı detayını incele.</p>
-          </div>
-          <InteractiveMap state={state} round={operationalRound} selectedKingdom={selectedKingdom} onSelect={setSelectedKingdom} />
-        </section>
+            <InteractiveMap state={state} round={operationalRound} selectedKingdom={selectedKingdom} onSelect={setSelectedKingdom} />
+          </section>
+
+          {!projectionMode ? (
+            <div className="bottom-grid">
+              <Scoreboard state={state} revealSecrets />
+              <ActivityLog state={state} dispatch={dispatch} />
+            </div>
+          ) : null}
+        </div>
 
         <aside className="control-dock" aria-label="Moderatör kontrolleri">
           {projectionMode ? (
@@ -182,13 +191,6 @@ export default function App() {
             </>
           )}
         </aside>
-
-        {!projectionMode ? (
-          <div className="bottom-grid">
-            <Scoreboard state={state} revealSecrets />
-            <ActivityLog state={state} dispatch={dispatch} />
-          </div>
-        ) : null}
       </main>
     </div>
   );
