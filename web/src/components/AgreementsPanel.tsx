@@ -3,6 +3,7 @@ import { KINGDOMS } from '../data/gameData';
 import type { GameDispatch } from '../state/useGameState';
 import type { AgreementStatus, AgreementType, GameState, KingdomId } from '../types';
 import { formatClock, getKingdomDefinition } from '../utils/gameMath';
+import { CollapsibleSections } from './CollapsibleSections';
 
 interface AgreementsPanelProps {
   state: GameState;
@@ -49,7 +50,7 @@ export function AgreementsPanel({ state, dispatch, round, selectedKingdom }: Agr
   }
 
   return (
-    <div className="panel-stack">
+    <CollapsibleSections className="panel-stack">
       <section className="control-section">
         <div className="section-heading">
           <p className="eyebrow">Tescil Masası</p>
@@ -172,6 +173,6 @@ export function AgreementsPanel({ state, dispatch, round, selectedKingdom }: Agr
           )}
         </div>
       </section>
-    </div>
+    </CollapsibleSections>
   );
 }

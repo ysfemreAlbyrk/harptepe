@@ -12,6 +12,7 @@ import type { GameDispatch } from '../state/useGameState';
 import type { GameState, KingdomId, ResourceKey, Resources, TaxLevel } from '../types';
 import { canAfford, formatResourceBundle, RESOURCE_KEYS } from '../utils/gameMath';
 import { emptyBundle, ResourceBundleInput, type BundleState } from './ResourceBundleInput';
+import { CollapsibleSections } from './CollapsibleSections';
 
 interface OperationsPanelProps {
   state: GameState;
@@ -124,7 +125,7 @@ export function OperationsPanel({ state, dispatch, round, selectedKingdom }: Ope
   }
 
   return (
-    <div className="panel-stack">
+    <CollapsibleSections className="panel-stack">
       <section className="control-section">
         <div className="section-heading">
           <p className="eyebrow">Tur operasyonu</p>
@@ -270,59 +271,58 @@ export function OperationsPanel({ state, dispatch, round, selectedKingdom }: Ope
         </div>
       </section>
 
-      <section className="control-section two-column-section">
-        <div>
-          <div className="section-heading">
-            <p className="eyebrow">Kaynak düzeltme</p>
-            <h3>Manuel kaynak</h3>
-          </div>
-          <form onSubmit={submitAdjustment} className="compact-form">
-            <KingdomSelect label="Krallık" value={adjustKingdom} onChange={setAdjustKingdom} />
-            <label className="field">
-              <span>Kaynak</span>
-              <select value={adjustResource} onChange={(event) => setAdjustResource(event.target.value as ResourceKey)}>
-                {RESOURCE_KEYS.map((key) => (
-                  <option key={key} value={key}>
-                    {RESOURCE_LABELS[key]}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className="field">
-              <span>Miktar (+/-)</span>
-              <input type="number" value={adjustAmount} onChange={(event) => setAdjustAmount(Number(event.target.value))} />
-            </label>
-            <label className="field">
-              <span>Neden</span>
-              <input value={adjustReason} onChange={(event) => setAdjustReason(event.target.value)} placeholder="Örn. moderatör düzeltmesi" />
-            </label>
-            <button className="ghost-button" type="submit">
-              Kaynağı düzenle
-            </button>
-          </form>
+      <section className="control-section">
+        <div className="section-heading">
+          <p className="eyebrow">Kaynak düzeltme</p>
+          <h3>Manuel kaynak</h3>
         </div>
-
-        <div>
-          <div className="section-heading">
-            <p className="eyebrow">Prestij düzeltme</p>
-            <h3>Manuel PP</h3>
-          </div>
-          <form onSubmit={submitPrestige} className="compact-form">
-            <KingdomSelect label="Krallık" value={prestigeKingdom} onChange={setPrestigeKingdom} />
-            <label className="field">
-              <span>PP (+/-)</span>
-              <input type="number" value={prestigeAmount} onChange={(event) => setPrestigeAmount(Number(event.target.value))} />
-            </label>
-            <label className="field">
-              <span>Neden</span>
-              <input value={prestigeReason} onChange={(event) => setPrestigeReason(event.target.value)} placeholder="Örn. görev ödülü" />
-            </label>
-            <button className="ghost-button" type="submit">
-              PP düzenle
-            </button>
-          </form>
-        </div>
+        <form onSubmit={submitAdjustment} className="compact-form">
+          <KingdomSelect label="Krallık" value={adjustKingdom} onChange={setAdjustKingdom} />
+          <label className="field">
+            <span>Kaynak</span>
+            <select value={adjustResource} onChange={(event) => setAdjustResource(event.target.value as ResourceKey)}>
+              {RESOURCE_KEYS.map((key) => (
+                <option key={key} value={key}>
+                  {RESOURCE_LABELS[key]}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="field">
+            <span>Miktar (+/-)</span>
+            <input type="number" value={adjustAmount} onChange={(event) => setAdjustAmount(Number(event.target.value))} />
+          </label>
+          <label className="field">
+            <span>Neden</span>
+            <input value={adjustReason} onChange={(event) => setAdjustReason(event.target.value)} placeholder="Örn. moderatör düzeltmesi" />
+          </label>
+          <button className="ghost-button" type="submit">
+            Kaynağı düzenle
+          </button>
+        </form>
       </section>
+
+      <section className="control-section">
+        <div className="section-heading">
+          <p className="eyebrow">Prestij düzeltme</p>
+          <h3>Manuel PP</h3>
+        </div>
+        <form onSubmit={submitPrestige} className="compact-form">
+          <KingdomSelect label="Krallık" value={prestigeKingdom} onChange={setPrestigeKingdom} />
+          <label className="field">
+            <span>PP (+/-)</span>
+            <input type="number" value={prestigeAmount} onChange={(event) => setPrestigeAmount(Number(event.target.value))} />
+          </label>
+          <label className="field">
+            <span>Neden</span>
+            <input value={prestigeReason} onChange={(event) => setPrestigeReason(event.target.value)} placeholder="Örn. görev ödülü" />
+          </label>
+          <button className="ghost-button" type="submit">
+            PP düzenle
+          </button>
+        </form>
+      </section>
+
       <section className="control-section">
         <div className="section-heading">
           <p className="eyebrow">Kurulum</p>
@@ -401,6 +401,6 @@ export function OperationsPanel({ state, dispatch, round, selectedKingdom }: Ope
         </div>
       </section>
 
-    </div>
+    </CollapsibleSections>
   );
 }

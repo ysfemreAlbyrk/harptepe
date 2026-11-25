@@ -5,6 +5,7 @@ import type { GameState, KingdomId, Resources } from '../types';
 import { formatResourceBundle, getKingdomDefinition, RESOURCE_KEYS } from '../utils/gameMath';
 import { KingdomSelect } from './OperationsPanel';
 import { emptyBundle, ResourceBundleInput, type BundleState } from './ResourceBundleInput';
+import { CollapsibleSections } from './CollapsibleSections';
 
 interface EventsPanelProps {
   state: GameState;
@@ -112,7 +113,7 @@ export function EventsPanel({ state, dispatch, round, selectedKingdom }: EventsP
   }
 
   return (
-    <div className="panel-stack">
+    <CollapsibleSections className="panel-stack">
       <section className="control-section">
         <div className="section-heading split-heading">
           <div>
@@ -306,6 +307,6 @@ export function EventsPanel({ state, dispatch, round, selectedKingdom }: EventsP
           ))}
         </div>
       </section>
-    </div>
+    </CollapsibleSections>
   );
 }
