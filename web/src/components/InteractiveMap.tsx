@@ -1,4 +1,4 @@
-import type { CSSProperties } from 'react';
+import { useState, type CSSProperties } from 'react';
 import { BUILDINGS, RESOURCE_SHORT_LABELS, TAX_RULES } from '../data/gameData';
 import type { GameState, KingdomId, ResourceKey } from '../types';
 import { calculateKingdomScore, getKingdomDefinition, productionForKingdom, RESOURCE_KEYS } from '../utils/gameMath';
@@ -45,6 +45,7 @@ const chestPositions = [
 ];
 
 export function InteractiveMap({ state, round, selectedKingdom, onSelect }: InteractiveMapProps) {
+  const [detailOpen, setDetailOpen] = useState(() => window.innerWidth > 760);
   const selectedDefinition = getKingdomDefinition(selectedKingdom);
   const selectedState = state.kingdoms[selectedKingdom];
   const selectedScore = calculateKingdomScore(state, selectedKingdom);
@@ -57,8 +58,8 @@ export function InteractiveMap({ state, round, selectedKingdom, onSelect }: Inte
       <svg className="map-terrain" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
         <defs>
           <linearGradient id="river" x1="0" x2="1">
-            <stop offset="0" stopColor="rgba(93, 148, 188, 0.42)" />
-            <stop offset="1" stopColor="rgba(93, 148, 188, 0.08)" />
+            <stop offset="0" stopColor="rgba(91, 123, 122, 0.48)" />
+            <stop offset="1" stopColor="rgba(91, 123, 122, 0.16)" />
           </linearGradient>
         </defs>
         <path className="map-river" d="M -4 70 C 20 58, 22 39, 45 39 C 68 39, 69 23, 104 12" />
@@ -78,6 +79,11 @@ export function InteractiveMap({ state, round, selectedKingdom, onSelect }: Inte
       <div className="map-landmark landmark-mountain" style={{ left: '54%', top: '29%' }} />
       <div className="map-landmark landmark-forest" style={{ left: '25%', top: '32%' }} />
       <div className="map-landmark landmark-harbor" style={{ left: '72%', top: '88%' }} />
+      <div className="map-compass" aria-hidden="true"><span /></div>
+      <span className="map-region-label label-north" aria-hidden="true">Kuzey tarlaları</span>
+      <span className="map-region-label label-west" aria-hidden="true">Batı ormanları</span>
+      <span className="map-region-label label-east" aria-hidden="true">Doğu madenleri</span>
+      <span className="map-region-label label-south" aria-hidden="true">Güney liman yolu</span>
 
       {state.chests.map((chest, index) => {
         const position = chestPositions[index] ?? { x: 50, y: 50 };
@@ -111,7 +117,10 @@ export function InteractiveMap({ state, round, selectedKingdom, onSelect }: Inte
                 '--kingdom-soft': definition.softColor,
               } as CSSProperties
             }
-            onClick={() => onSelect(kingdomId)}
+            onClick={() => {
+              onSelect(kingdomId);
+              setDetailOpen(true);
+            }}
             aria-label={`${definition.name} krallığını seç`}
           >
             <span className="map-keep" aria-hidden="true">
@@ -131,28 +140,42 @@ export function InteractiveMap({ state, round, selectedKingdom, onSelect }: Inte
 
       </div>
 
-      <aside className="map-detail" style={{ '--kingdom-color': selectedDefinition.color } as CSSProperties}>
-        <div className="map-detail-heading">
-          <div>
-            <p className="eyebrow">Seçili krallık</p>
-            <h3>{selectedDefinition.name}</h3>
+      {detailOpen ? (
+        <aside className="map-detail" style={{ '--kingdom-color': selectedDefinition.color } as CSSProperties}>
+          <button className="map-detail-close" type="button" onClick={() => setDetailOpen(false)} aria-label="Krallık kaydını kapat">
+            ×
+          </button>
+          <div className="map-detail-heading">
+            <div>
+              <p className="eyebrow">Seçili krallık</p>
+              <h3>{selectedDefinition.name}</h3>
+            </div>
+            <strong>{selectedScore.total} PP</strong>
           </div>
-          <strong>{selectedScore.total} PP</strong>
-        </div>
-        <div className="map-resource-row">
-          {RESOURCE_KEYS.map((key: ResourceKey) => (
-            <span key={key} className={`mini-resource resource-${key}`}>
-              <span>{RESOURCE_SHORT_LABELS[key]}</span>
-              <strong>{selectedState.resources[key]}</strong>
-            </span>
-          ))}
-        </div>
-        <div className="map-detail-facts">
-          <span>Üretim: {RESOURCE_KEYS.filter((key) => production[key] > 0).map((key) => `+${production[key]}${RESOURCE_SHORT_LABELS[key]}`).join(' ') || '—'}</span>
-          <span>Vergi: {currentTax ? TAX_RULES[currentTax].label : 'seçilmedi'}</span>
-          <span>Yapılar: {selectedState.buildings.length ? selectedState.buildings.map((id) => BUILDINGS.find((item) => item.id === id)?.name).filter(Boolean).join(', ') : 'yok'}</span>
-        </div>
-      </aside>
+          <div className="map-resource-row">
+            {RESOURCE_KEYS.map((key: ResourceKey) => (
+              <span key={key} className={`mini-resource resource-${key}`}>
+                <span>{RESOURCE_SHORT_LABELS[key]}</span>
+                <strong>{selectedState.resources[key]}</strong>
+              </span>
+            ))}
+          </div>
+          <div className="map-detail-facts">
+            <span>Üretim: {RESOURCE_KEYS.filter((key) => production[key] > 0).map((key) => `+${production[key]}${RESOURCE_SHORT_LABELS[key]}`).join(' ') || '—'}</span>
+            <span>Vergi: {currentTax ? TAX_RULES[currentTax].label : 'seçilmedi'}</span>
+            <span>Yapılar: {selectedState.buildings.length ? selectedState.buildings.map((id) => BUILDINGS.find((item) => item.id === id)?.name).filter(Boolean).join(', ') : 'yok'}</span>
+          </div>
+        </aside>
+      ) : (
+        <button
+          className="map-detail-open"
+          type="button"
+          style={{ '--kingdom-color': selectedDefinition.color } as CSSProperties}
+          onClick={() => setDetailOpen(true)}
+        >
+          {selectedDefinition.name} kaydı
+        </button>
+      )}
     </>
   );
 }

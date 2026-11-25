@@ -155,84 +155,6 @@ export function OperationsPanel({ state, dispatch, round, selectedKingdom }: Ope
 
       <section className="control-section">
         <div className="section-heading">
-          <p className="eyebrow">Kurulum</p>
-          <h3>Draft sonuçları</h3>
-        </div>
-        <div className="draft-grid">
-          {KINGDOMS.map((definition) => {
-            const kingdom = state.kingdoms[definition.id];
-            return (
-              <div className="draft-row" key={definition.id}>
-                <span>{definition.name}</span>
-                <select
-                  aria-label={`${definition.name} ayrıcalık kartı`}
-                  value={kingdom.privilegeCardId ?? ''}
-                  onChange={(event) =>
-                    dispatch({
-                      type: 'setPrivilegeCard',
-                      kingdomId: definition.id,
-                      privilegeCardId: event.target.value || null,
-                    })
-                  }
-                >
-                  <option value="">Ayrıcalık yok</option>
-                  {PRIVILEGE_CARDS.map((privilege) => (
-                    <option key={privilege.id} value={privilege.id} title={privilege.effect}>
-                      {privilege.name}
-                    </option>
-                  ))}
-                </select>
-                <select
-                  aria-label={`${definition.name} başlangıç paketi`}
-                  value={kingdom.startingPackageId ?? ''}
-                  onChange={(event) =>
-                    dispatch({
-                      type: 'setStartingPackage',
-                      kingdomId: definition.id,
-                      packageId: event.target.value || null,
-                    })
-                  }
-                >
-                  <option value="">Paket yok</option>
-                  {STARTING_PACKAGES.map((startingPackage) => (
-                    <option key={startingPackage.id} value={startingPackage.id} title={packageDescription(startingPackage.id)}>
-                      {startingPackage.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            );
-          })}
-        </div>
-        <div className="setup-subsection">
-          <h4>Gizli hedefler</h4>
-          <div className="tax-grid">
-            {KINGDOMS.map((definition) => {
-              const kingdom = state.kingdoms[definition.id];
-              return (
-                <div className="tax-row privilege-row" key={definition.id}>
-                  <span>{definition.name}</span>
-                  <select
-                    value={kingdom.secretObjectiveId}
-                    onChange={(event) =>
-                      dispatch({ type: 'setSecretObjective', kingdomId: definition.id, objectiveId: event.target.value })
-                    }
-                  >
-                    {SECRET_OBJECTIVES.map((objective) => (
-                      <option key={objective.id} value={objective.id}>
-                        {objective.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      <section className="control-section">
-        <div className="section-heading">
           <p className="eyebrow">Vergi</p>
           <h3>Tur vergisi seçimi</h3>
         </div>
@@ -401,6 +323,84 @@ export function OperationsPanel({ state, dispatch, round, selectedKingdom }: Ope
           </form>
         </div>
       </section>
+      <section className="control-section">
+        <div className="section-heading">
+          <p className="eyebrow">Kurulum</p>
+          <h3>Draft sonuçları</h3>
+        </div>
+        <div className="draft-grid">
+          {KINGDOMS.map((definition) => {
+            const kingdom = state.kingdoms[definition.id];
+            return (
+              <div className="draft-row" key={definition.id}>
+                <span>{definition.name}</span>
+                <select
+                  aria-label={`${definition.name} ayrıcalık kartı`}
+                  value={kingdom.privilegeCardId ?? ''}
+                  onChange={(event) =>
+                    dispatch({
+                      type: 'setPrivilegeCard',
+                      kingdomId: definition.id,
+                      privilegeCardId: event.target.value || null,
+                    })
+                  }
+                >
+                  <option value="">Ayrıcalık yok</option>
+                  {PRIVILEGE_CARDS.map((privilege) => (
+                    <option key={privilege.id} value={privilege.id} title={privilege.effect}>
+                      {privilege.name}
+                    </option>
+                  ))}
+                </select>
+                <select
+                  aria-label={`${definition.name} başlangıç paketi`}
+                  value={kingdom.startingPackageId ?? ''}
+                  onChange={(event) =>
+                    dispatch({
+                      type: 'setStartingPackage',
+                      kingdomId: definition.id,
+                      packageId: event.target.value || null,
+                    })
+                  }
+                >
+                  <option value="">Paket yok</option>
+                  {STARTING_PACKAGES.map((startingPackage) => (
+                    <option key={startingPackage.id} value={startingPackage.id} title={packageDescription(startingPackage.id)}>
+                      {startingPackage.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            );
+          })}
+        </div>
+        <div className="setup-subsection">
+          <h4>Gizli hedefler</h4>
+          <div className="tax-grid">
+            {KINGDOMS.map((definition) => {
+              const kingdom = state.kingdoms[definition.id];
+              return (
+                <div className="tax-row privilege-row" key={definition.id}>
+                  <span>{definition.name}</span>
+                  <select
+                    value={kingdom.secretObjectiveId}
+                    onChange={(event) =>
+                      dispatch({ type: 'setSecretObjective', kingdomId: definition.id, objectiveId: event.target.value })
+                    }
+                  >
+                    {SECRET_OBJECTIVES.map((objective) => (
+                      <option key={objective.id} value={objective.id}>
+                        {objective.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
     </div>
   );
 }
