@@ -6,3 +6,6 @@ vite.config.d.ts
 screenshot*.png
 .screenshots/
 NUL
+
+# Yerel senkronizasyon verisi
+server/.data/

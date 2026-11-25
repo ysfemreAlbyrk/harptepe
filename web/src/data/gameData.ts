@@ -2,6 +2,7 @@ import type {
   BuildingDefinition,
   GamePhase,
   KingdomDefinition,
+  PlayerRoleDefinition,
   PrivilegeCardDefinition,
   ResourceKey,
   Resources,
@@ -381,3 +382,125 @@ export const ROUND_EVENTS: Record<number, { title: string; description: string }
     description: 'Son pazarlıklar yapılır. Tur sonunda en çok Taç oyu alan krallık +5 PP kazanır.',
   },
 };
+
+export const PLAYER_ROLES: PlayerRoleDefinition[] = [
+  {
+    id: 'monarch',
+    name: 'Hükümdar',
+    count: 1,
+    mission: 'Krallığın nihai karar mercii ol; vergiyi, savaşı ve diplomatik yönü belirle.',
+    responsibilities: [
+      'Her tur vergi seviyesini seçer ve moderatöre bildirir.',
+      'Savaş, ittifak ve anlaşma kararlarında son sözü söyler.',
+      'Meclis tartışmalarını kısa tutar ve krallığa net hedef verir.',
+      'Oyun sonundaki Taç oylamasına katılır.',
+    ],
+    tips: [
+      'Her turun başında bir cümlelik strateji ilan et: üretim, ticaret, diplomasi veya savaş.',
+      'Kaynak saymayı Vezir’e, saha bilgisini Casus’a bırak; sen öncelikleri belirle.',
+      'Anlaşma imzalamadan önce bedelini ve bozma cezasını mutlaka sor.',
+    ],
+  },
+  {
+    id: 'vizier',
+    name: 'Vezir-Hazinedar',
+    count: 1,
+    mission: 'Krallığın kasasını, üretimini ve ödeme disiplinini yönet.',
+    responsibilities: [
+      'Üretim kaynaklarını ve gıda bakımını takip eder.',
+      'Yapı maliyetlerini hesaplar ve satın alma işlemlerini moderatöre iletir.',
+      'Ticaret ve borçların krallık hazinesine etkisini izler.',
+      'Kaynak eksikliği riskini Hükümdar’a erken bildirir.',
+    ],
+    tips: [
+      'Her tur sonunda mutlaka bakım bedelini kenara ayır.',
+      'Kâğıt kalemle basit bir gelir-gider tablosu tut.',
+      'Anıt gibi büyük hedefler için eksik kaynakları bir tur önceden planla.',
+    ],
+  },
+  {
+    id: 'merchant',
+    name: 'Tüccar',
+    count: 2,
+    mission: 'Fazla kaynakları değere, eksik kaynakları fırsata çevir.',
+    responsibilities: [
+      'Diğer krallıklarla kaynak ve altın takası yapar.',
+      'Pazar fiyatlarını öğrenir ve krallığına raporlar.',
+      'Küçük işlemleri hızlıca tamamlar; büyük işlemler için Hükümdar onayı alır.',
+      'Ticari fırsatları ve kaynak kıtlıklarını izler.',
+    ],
+    tips: [
+      'Önce krallığının neye ihtiyacı olduğunu öğren, sonra pazara çık.',
+      'Aynı kaynağın farklı krallıklardaki fiyatını karşılaştır.',
+      'Vadeli ticaretlerde yazılı tescil iste; sözlü söze güvenme.',
+    ],
+  },
+  {
+    id: 'envoy',
+    name: 'Elçi',
+    count: 2,
+    mission: 'İttifakları, saldırmazlık paktlarını ve ortak projeleri müzakere et.',
+    responsibilities: [
+      'Diğer krallıklara resmî teklifler taşır.',
+      'Anlaşma metinlerini hazırlar ve Tescil Masası’na götürür.',
+      'Şüpheli mektupları yüz yüze doğrulamaya çalışır.',
+      'Hükümdar’ın diplomasi kararlarını sahada uygular.',
+    ],
+    tips: [
+      'Bir anlaşmanın süresini, bedelini ve bozma cezasını yazılı hâle getir.',
+      'Tescilsiz anlaşmanın bağlayıcı olmadığını unutma.',
+      'Karşı tarafa da kazandıran teklifler daha uzun yaşar.',
+    ],
+  },
+  {
+    id: 'spy',
+    name: 'Casus',
+    count: 1,
+    mission: 'Doğru bilgiyi bul, yanlış bilgiyi ustaca yay.',
+    responsibilities: [
+      'Casus jetonlarını kullanarak moderatörden bilgi alır.',
+      'Rakip planlarını, kaynak durumlarını ve anlaşmaları izler.',
+      'Sahte mektup ve söylenti stratejileri hazırlar.',
+      'Topladığı bilgiyi krallık meclisine süzülmüş şekilde aktarır.',
+    ],
+    tips: [
+      'Her bilginin kaynağını ve güvenilirliğini ayrı not et.',
+      'Yalan söylemek serbest olabilir ama mühür ihlali ciddi ceza doğurur.',
+      'En değerli bilgi çoğu zaman kimin kime saldıracağıdır.',
+    ],
+  },
+  {
+    id: 'commander',
+    name: 'Komutan',
+    count: 1,
+    mission: 'Krallığın askerî gücünü ve savaş anındaki soğukkanlılığını temsil et.',
+    responsibilities: [
+      'Asker gücünü, surları ve savaş maliyetlerini takip eder.',
+      'Taş-kâğıt-makas düellolarına çıkar.',
+      'Savaş kararı öncesinde riskleri Hükümdar’a anlatır.',
+      'Saldırı ve savunma sonuçlarını moderatörle birlikte doğrular.',
+    ],
+    tips: [
+      'Savaş kazanmak kadar savaştan kaçınmak da stratejidir.',
+      'Sur ve asker gücü farkını hesaplamadan saldırmayı önerme.',
+      'Düelloyu kaybetsen bile zar ve asker farkı sonucu değiştirebilir.',
+    ],
+  },
+  {
+    id: 'explorer',
+    name: 'Kâşif',
+    count: 2,
+    mission: 'Sandıkları, bilmeceleri ve turnuva fırsatlarını kovala.',
+    responsibilities: [
+      'Keşif sandıklarındaki soruları çözer.',
+      'Turnuvalarda krallığı temsil eder.',
+      'Haritadaki yeni fırsatları hızlıca öğrenir.',
+      'Kazanılan ödüllerin moderatör tarafından işlendiğini kontrol eder.',
+    ],
+    tips: [
+      'Sandık açıldığı anda erken davran; ilk doğru cevap ödülü alır.',
+      'Zor sandıklarda ipucu zincirini not al.',
+      'Turnuva kazanımları küçük görünür ama final farkını yaratabilir.',
+    ],
+  },
+];
