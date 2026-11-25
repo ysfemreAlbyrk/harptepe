@@ -161,3 +161,14 @@ export interface GamePhase {
   round?: number;
   description: string;
 }
+
+export type PlayerRoleId = 'monarch' | 'vizier' | 'merchant' | 'envoy' | 'spy' | 'commander' | 'explorer';
+
+export interface PlayerRoleDefinition {
+  id: PlayerRoleId;
+  name: string;
+  count: number;
+  mission: string;
+  responsibilities: string[];
+  tips: string[];
+}

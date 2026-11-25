@@ -3,16 +3,19 @@ import { ActivityLog } from './components/ActivityLog';
 import { AgreementsPanel } from './components/AgreementsPanel';
 import { EventsPanel } from './components/EventsPanel';
 import { Header } from './components/Header';
-import { KingdomCard } from './components/KingdomCard';
+import { InteractiveMap } from './components/InteractiveMap';
 import { OperationsPanel } from './components/OperationsPanel';
+import { PlayerView } from './components/PlayerView';
+import { PortalView } from './components/PortalView';
 import { Scoreboard } from './components/Scoreboard';
-import { KINGDOMS, ROUND_EVENTS } from './data/gameData';
+import { KINGDOMS, PLAYER_ROLES, ROUND_EVENTS } from './data/gameData';
 import { useGameState } from './state/useGameState';
-import type { KingdomId } from './types';
+import type { KingdomId, PlayerRoleId } from './types';
 import { getCurrentPhase, getOperationalRound } from './utils/gameFlow';
 import { calculateKingdomScore, getKingdomDefinition, sortedKingdomIds } from './utils/gameMath';
 
 type PanelTab = 'operations' | 'agreements' | 'events';
+type ViewMode = 'portal' | 'moderator' | 'projection' | 'player';
 
 const tabLabels: Record<PanelTab, string> = {
   operations: 'Operasyon',
@@ -20,14 +23,90 @@ const tabLabels: Record<PanelTab, string> = {
   events: 'Keşif & Savaş',
 };
 
+function validKingdom(value: string | null): KingdomId {
+  return KINGDOMS.some((kingdom) => kingdom.id === value) ? (value as KingdomId) : 'north';
+}
+
+function validRole(value: string | null): PlayerRoleId {
+  return PLAYER_ROLES.some((role) => role.id === value) ? (value as PlayerRoleId) : 'monarch';
+}
+
+function initialNavigation(): { view: ViewMode; kingdom: KingdomId; role: PlayerRoleId } {
+  const params = new URLSearchParams(window.location.search);
+  const requested = params.get('view');
+  const view: ViewMode = params.get('projection') === '1'
+    ? 'projection'
+    : requested === 'moderator' || requested === 'player' || requested === 'projection'
+      ? requested
+      : 'portal';
+  return {
+    view,
+    kingdom: validKingdom(params.get('kingdom')),
+    role: validRole(params.get('role')),
+  };
+}
+
+function writeNavigation(view: ViewMode, kingdom: KingdomId, role: PlayerRoleId) {
+  const url = new URL(window.location.href);
+  url.search = '';
+  if (view === 'projection') {
+    url.searchParams.set('projection', '1');
+  } else if (view !== 'portal') {
+    url.searchParams.set('view', view);
+  }
+  if (view === 'player') {
+    url.searchParams.set('kingdom', kingdom);
+    url.searchParams.set('role', role);
+  }
+  window.history.replaceState(null, '', url);
+}
+
 export default function App() {
-  const { state, dispatch } = useGameState();
+  const initial = useState(initialNavigation)[0];
+  const [viewMode, setViewMode] = useState<ViewMode>(initial.view);
+  const [playerKingdom, setPlayerKingdom] = useState<KingdomId>(initial.kingdom);
+  const [playerRole, setPlayerRole] = useState<PlayerRoleId>(initial.role);
+  const { state, dispatch, networkStatus } = useGameState({ publishNetwork: viewMode === 'moderator' });
   const [selectedKingdom, setSelectedKingdom] = useState<KingdomId>('north');
   const [activeTab, setActiveTab] = useState<PanelTab>('operations');
-  const [projectionMode, setProjectionMode] = useState(
-    () => new URLSearchParams(window.location.search).get('projection') === '1',
-  );
 
+  function navigate(view: ViewMode, kingdom = playerKingdom, role = playerRole) {
+    setViewMode(view);
+    setPlayerKingdom(kingdom);
+    setPlayerRole(role);
+    writeNavigation(view, kingdom, role);
+  }
+
+  if (viewMode === 'portal') {
+    return (
+      <div className="app-shell portal-app">
+        <PortalView
+          networkStatus={networkStatus}
+          onEnterModerator={() => navigate('moderator')}
+          onEnterProjection={() => navigate('projection')}
+          onEnterPlayer={(kingdom, role) => navigate('player', kingdom, role)}
+        />
+      </div>
+    );
+  }
+
+  if (viewMode === 'player') {
+    return (
+      <div className="app-shell player-app">
+        <PlayerView
+          state={state}
+          kingdomId={playerKingdom}
+          roleId={playerRole}
+          networkStatus={networkStatus}
+          onChangeKingdom={(kingdom) => navigate('player', kingdom, playerRole)}
+          onChangeRole={(role) => navigate('player', playerKingdom, role)}
+          onExit={() => navigate('portal')}
+        />
+      </div>
+    );
+  }
+
+  const projectionMode = viewMode === 'projection';
   const phase = getCurrentPhase(state.elapsedSeconds);
   const round = phase.round ?? 0;
   const operationalRound = getOperationalRound(state.elapsedSeconds);
@@ -44,7 +123,7 @@ export default function App() {
         phase={phase}
         dispatch={dispatch}
         projectionMode={projectionMode}
-        onToggleProjection={() => setProjectionMode((value) => !value)}
+        onToggleProjection={() => navigate(projectionMode ? 'moderator' : 'projection')}
       />
 
       <section className="event-banner">
@@ -53,33 +132,25 @@ export default function App() {
           <h2>{event?.title ?? 'Hazırlık'}</h2>
           <p>{event?.description ?? 'Oyun başlamadan önce krallıklar ve roller hazırlanır.'}</p>
         </div>
-        <div className="leader-badge">
-          <span>Canlı lider</span>
-          <strong>{leaderLabel}</strong>
+        <div className="event-side-stack">
+          <span className={`network-pill network-${networkStatus}`}>Ağ: {networkStatus}</span>
+          <div className="leader-badge">
+            <span>Canlı lider</span>
+            <strong>{leaderLabel}</strong>
+          </div>
         </div>
       </section>
 
       <main className="main-layout">
-        <section className="board-area" aria-label="Krallık durumları">
+        <section className="board-area" aria-label="Krallık haritası">
           <div className="board-heading">
             <div>
               <p className="eyebrow">Altı krallık</p>
-              <h2>Kaynak ve güç haritası</h2>
+              <h2>İnteraktif güç haritası</h2>
             </div>
-            <p>Serbest hareket sırasında odada en fazla 3 kişi kalır.</p>
+            <p>Krallık mühürlerine dokunarak kaynak, üretim, vergi ve yapı detayını incele.</p>
           </div>
-          <div className="kingdom-grid">
-            {KINGDOMS.map((kingdom) => (
-              <KingdomCard
-                key={kingdom.id}
-                kingdomId={kingdom.id}
-                state={state}
-                round={operationalRound}
-                selected={selectedKingdom === kingdom.id}
-                onSelect={setSelectedKingdom}
-              />
-            ))}
-          </div>
+          <InteractiveMap state={state} round={operationalRound} selectedKingdom={selectedKingdom} onSelect={setSelectedKingdom} />
         </section>
 
         <aside className="control-dock" aria-label="Moderatör kontrolleri">

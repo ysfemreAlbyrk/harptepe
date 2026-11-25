@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useReducer, useRef, type Dispatch } from 'react';
+import { useCallback, useEffect, useReducer, useRef, useState, type Dispatch } from 'react';
 import {
   BUILDINGS,
   KINGDOMS,
@@ -875,9 +875,19 @@ function timerClientId(): string {
   }
 }
 
-export function useGameState() {
+export type NetworkStatus = 'kapalı' | 'bağlanıyor' | 'bağlı' | 'kopuk';
+
+interface UseGameStateOptions {
+  publishNetwork?: boolean;
+}
+
+export function useGameState({ publishNetwork = false }: UseGameStateOptions = {}) {
   const [state, baseDispatch] = useReducer(gameReducer, undefined as unknown as GameState, loadInitialState);
+  const [networkStatus, setNetworkStatus] = useState<NetworkStatus>('kapalı');
+  const [networkReady, setNetworkReady] = useState(false);
   const lastSerializedRef = useRef('');
+  const lastNetworkSerializedRef = useRef('');
+  const socketRef = useRef<WebSocket | null>(null);
   const clientIdRef = useRef(timerClientId());
   const dispatch = useCallback<GameDispatch>((action) => {
     baseDispatch(action.type === 'toggleTimer' ? { ...action, ownerId: clientIdRef.current } : action);
@@ -903,7 +913,71 @@ export function useGameState() {
 
     window.addEventListener('storage', handleStorage);
     return () => window.removeEventListener('storage', handleStorage);
-  }, []);
+  }, [dispatch]);
+
+  useEffect(() => {
+    let disposed = false;
+    let reconnectTimer = 0;
+
+    function connect() {
+      if (disposed) return;
+      setNetworkStatus('bağlanıyor');
+      setNetworkReady(false);
+      const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
+      const host = window.location.hostname || 'localhost';
+      const socket = new WebSocket(`${protocol}://${host}:8787`);
+      socketRef.current = socket;
+
+      socket.onopen = () => {
+        setNetworkStatus('bağlı');
+        socket.send(JSON.stringify({ type: 'hello' }));
+      };
+
+      socket.onmessage = (event) => {
+        try {
+          const message = JSON.parse(String(event.data)) as { type?: string; state?: GameState | null };
+          if (message.type !== 'state') return;
+          setNetworkReady(true);
+          if (!message.state?.kingdoms || !message.state.nextIds) return;
+          const normalized = normalizeState(message.state);
+          const serialized = JSON.stringify(normalized);
+          if (serialized === lastSerializedRef.current) return;
+          lastNetworkSerializedRef.current = serialized;
+          dispatch({ type: 'syncState', state: normalized });
+        } catch {
+          return;
+        }
+      };
+
+      socket.onclose = () => {
+        setNetworkReady(false);
+        setNetworkStatus(disposed ? 'kapalı' : 'kopuk');
+        if (!disposed) reconnectTimer = window.setTimeout(connect, 3000);
+      };
+
+      socket.onerror = () => {
+        socket.close();
+      };
+    }
+
+    connect();
+    return () => {
+      disposed = true;
+      window.clearTimeout(reconnectTimer);
+      socketRef.current?.close();
+      socketRef.current = null;
+    };
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (!publishNetwork || networkStatus !== 'bağlı' || !networkReady) return;
+    const socket = socketRef.current;
+    if (!socket || socket.readyState !== WebSocket.OPEN) return;
+    const serialized = JSON.stringify(state);
+    if (serialized === lastNetworkSerializedRef.current) return;
+    socket.send(JSON.stringify({ type: 'state', state }));
+    lastNetworkSerializedRef.current = serialized;
+  }, [state, publishNetwork, networkStatus, networkReady]);
 
   useEffect(() => {
     if (!state.timerRunning || state.timerOwnerId !== clientIdRef.current) return;
@@ -911,7 +985,7 @@ export function useGameState() {
     return () => window.clearInterval(timer);
   }, [state.timerRunning, state.timerOwnerId, dispatch]);
 
-  return { state, dispatch };
+  return { state, dispatch, networkStatus };
 }
 
 export type GameDispatch = Dispatch<GameAction>;
