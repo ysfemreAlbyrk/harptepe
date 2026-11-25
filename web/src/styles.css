@@ -1938,11 +1938,9 @@ h3,
 }
 
 .map-detail {
-  position: absolute;
-  left: 22px;
-  top: 22px;
-  z-index: 4;
-  width: min(390px, calc(100% - 44px));
+  position: relative;
+  width: 100%;
+  margin-top: 12px;
   padding: 17px;
   border: 1px solid color-mix(in srgb, var(--kingdom-color) 42%, transparent);
   border-radius: 22px;
@@ -2334,10 +2332,6 @@ h3,
     min-height: 700px;
   }
 
-  .map-detail {
-    left: 14px;
-    top: 14px;
-  }
 
   .player-header,
   .player-identity-card {
@@ -2369,8 +2363,14 @@ h3,
   }
 
   .map-detail {
-    left: 12px;
-    right: 12px;
     width: auto;
   }
+}
+
+.portal-help code {
+  border-radius: 6px;
+  padding: 0.1rem 0.32rem;
+  color: var(--gold-bright);
+  background: rgba(240, 223, 189, 0.08);
+  border: 1px solid rgba(240, 223, 189, 0.12);
 }

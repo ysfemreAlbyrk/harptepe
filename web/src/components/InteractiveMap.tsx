@@ -52,7 +52,8 @@ export function InteractiveMap({ state, round, selectedKingdom, onSelect }: Inte
   const currentTax = round > 0 ? selectedState.taxHistory[round] : undefined;
 
   return (
-    <div className="interactive-map" aria-label="İnteraktif krallık haritası">
+    <>
+      <div className="interactive-map" aria-label="İnteraktif krallık haritası">
       <svg className="map-terrain" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
         <defs>
           <linearGradient id="river" x1="0" x2="1">
@@ -128,6 +129,8 @@ export function InteractiveMap({ state, round, selectedKingdom, onSelect }: Inte
         );
       })}
 
+      </div>
+
       <aside className="map-detail" style={{ '--kingdom-color': selectedDefinition.color } as CSSProperties}>
         <div className="map-detail-heading">
           <div>
@@ -150,6 +153,6 @@ export function InteractiveMap({ state, round, selectedKingdom, onSelect }: Inte
           <span>Yapılar: {selectedState.buildings.length ? selectedState.buildings.map((id) => BUILDINGS.find((item) => item.id === id)?.name).filter(Boolean).join(', ') : 'yok'}</span>
         </div>
       </aside>
-    </div>
+    </>
   );
 }

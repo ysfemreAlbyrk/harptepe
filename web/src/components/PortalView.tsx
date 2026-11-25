@@ -66,8 +66,8 @@ export function PortalView({ networkStatus, onEnterModerator, onEnterProjection,
       <section className="portal-help">
         <h2>Oyuncular nasıl girer?</h2>
         <ol>
-          <li>Moderatör bilgisayarında web uygulaması ve senkronizasyon sunucusu açılır.</li>
-          <li>Oyuncular aynı yerel ağa bağlanır ve moderatörün paylaştığı adresi tarayıcıya yazar.</li>
+          <li>Moderatör bilgisayarında <code>npm start</code> çalıştırılır; uygulama ve senkronizasyon 8787 portunda açılır.</li>
+          <li>Oyuncular aynı yerel ağa bağlanır ve moderatörün paylaştığı IP adresini 8787 portuyla tarayıcıya yazar.</li>
           <li>Açılan giriş ekranından krallık ve rol seçilir.</li>
           <li>Oyuncu ekranı salt okunurdur; kaynak ve puan işlemleri moderatör tarafından işlenir.</li>
         </ol>
