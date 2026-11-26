@@ -20,3 +20,9 @@
 - Her push öncesinde mümkünse `cd web && npm test` ve `cd web && npm run build` çalıştırılır.
 - `node_modules`, `dist`, derleme artıkları, ekran görüntüleri ve yerel durum dosyaları commitlenmez.
 - Kullanıcı açıkça istemedikçe geçmiş yeniden yazılmaz, force-push yapılmaz ve uzak depo ayarları değiştirilmez.
+
+## Harita/oyun motoru
+
+- Tam ekran harita Phaser 3 ile çalışır; sahne kodu `web/src/phaser/KingdomMapScene.ts`, arazi üretimi `web/src/phaser/terrainPainter.ts` içindedir.
+- React tarafı Phaser sahnesini `web/src/components/InteractiveMap.tsx` üzerinden yükler; oyun motoru dinamik import ile ayrı chunk olarak yüklenir.
+- Harita etkileşimi veya görsel dünya değiştirileceğinde SVG/DOM harita varsayımı yerine Phaser sahnesi ve canvas arazi üretimi güncellenmelidir.

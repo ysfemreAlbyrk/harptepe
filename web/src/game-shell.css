@@ -39,7 +39,12 @@ body:has(.game-shell) {
   border: 0 !important;
   border-radius: 0 !important;
   box-shadow: none !important;
-  background: #15100a !important;
+  background:
+    radial-gradient(ellipse at 52% 38%, rgba(112, 116, 68, 0.42), transparent 34%),
+    radial-gradient(ellipse at 18% 42%, rgba(54, 91, 54, 0.34), transparent 25%),
+    radial-gradient(ellipse at 79% 42%, rgba(91, 104, 89, 0.3), transparent 24%),
+    radial-gradient(ellipse at 52% 88%, rgba(72, 116, 113, 0.34), transparent 26%),
+    linear-gradient(145deg, #cfb783 0%, #b4a166 46%, #d2bd84 100%) !important;
 }
 
 .game-shell .interactive-map::before,
@@ -56,60 +61,6 @@ body:has(.game-shell) {
 
 .game-map-viewport.dragging {
   cursor: grabbing;
-}
-
-.map-world {
-  position: absolute;
-  left: 0;
-  top: 0;
-  overflow: hidden;
-  transform-origin: 0 0;
-  background:
-    radial-gradient(ellipse at 52% 40%, rgba(119, 124, 69, 0.28), transparent 34%),
-    radial-gradient(ellipse at 18% 43%, rgba(54, 93, 54, 0.32), transparent 24%),
-    radial-gradient(ellipse at 82% 40%, rgba(91, 104, 89, 0.28), transparent 22%),
-    radial-gradient(ellipse at 50% 10%, rgba(166, 137, 65, 0.22), transparent 24%),
-    radial-gradient(ellipse at 68% 84%, rgba(139, 94, 50, 0.24), transparent 25%),
-    linear-gradient(145deg, #cfb783 0%, #b99d62 45%, #dcc48e 100%);
-  box-shadow: inset 0 0 140px rgba(70, 43, 17, 0.34);
-}
-
-.map-world::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  opacity: 0.25;
-  background-image:
-    radial-gradient(circle, rgba(82, 51, 22, 0.19) 0 0.8px, transparent 1.2px),
-    linear-gradient(35deg, transparent 48%, rgba(82, 51, 22, 0.08) 49%, transparent 51%);
-  background-size: 25px 25px, 82px 82px;
-  mix-blend-mode: multiply;
-}
-
-.map-world::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-  background:
-    radial-gradient(ellipse at center, transparent 48%, rgba(74, 43, 17, 0.16) 100%),
-    linear-gradient(90deg, rgba(70, 43, 17, 0.12), transparent 8%, transparent 92%, rgba(70, 43, 17, 0.12));
-}
-
-.map-world .map-terrain,
-.map-world .map-chest,
-.map-world .map-kingdom,
-.map-world .map-region-label,
-.map-world .map-compass,
-.map-world .map-landmark {
-  z-index: 3;
-}
-
-.map-world .map-kingdom {
-  z-index: 5;
 }
 
 .map-camera-controls {
@@ -213,7 +164,7 @@ body:has(.game-shell) {
   right: 14px;
   bottom: 16px;
   z-index: 25;
-  width: min(430px, calc(100vw - 28px));
+  width: min(400px, calc(100vw - 28px));
   max-height: none !important;
   margin: 0;
   overflow: hidden !important;
@@ -503,13 +454,13 @@ body:has(.game-shell) {
 .projection-score-overlay,
 .game-player-left,
 .game-player-right {
-  top: 184px;
-  max-height: calc(100vh - 202px);
+  top: 148px;
+  max-height: calc(100vh - 166px);
 }
 
 .game-shell .map-detail,
 .game-shell .map-detail-open {
-  top: 184px;
+  top: 148px;
 }
 
 .game-command-drawer {
@@ -775,5 +726,260 @@ body:has(.game-shell) {
     position: fixed;
     width: max-content;
     white-space: nowrap;
+  }
+}
+
+/* Phaser canvas tam ekran oyun dünyasının kendisidir */
+.phaser-map-host,
+.phaser-map-host canvas {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+.phaser-map-host canvas {
+  outline: none;
+}
+
+/* Komuta çekmecesi açıkken kamera kontrolleri haritada erişilebilir kalır */
+.moderator-game.command-open .map-camera-controls {
+  right: 422px;
+}
+
+@media (max-width: 900px) {
+  .moderator-game.command-open .map-camera-controls {
+    right: 18px;
+    bottom: 148px;
+  }
+}
+
+/* Oyuncu yan panelleri harita üstünde temiz kalır; kaydırma çubuğu kenar çizgisi oluşturmaz */
+.game-player-left,
+.game-player-right {
+  scrollbar-width: none;
+}
+
+.game-player-left::-webkit-scrollbar,
+.game-player-right::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+/* Oyun motoru ilk yüklenirken boş karanlık yerine temiz bir geçiş mührü gösterilir */
+.phaser-map-loading {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transform: translate(-50%, -50%);
+  padding: 13px 18px;
+  border: 1px solid rgba(185, 133, 50, 0.42);
+  border-radius: 4px;
+  color: #ead8aa;
+  background: linear-gradient(145deg, rgba(52, 31, 15, 0.9), rgba(20, 12, 7, 0.92));
+  box-shadow: 0 16px 38px rgba(0, 0, 0, 0.38), inset 0 0 0 1px rgba(255, 226, 155, 0.05);
+  font-family: Cinzel, Georgia, serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.loading-compass {
+  width: 22px;
+  height: 22px;
+  border: 1px solid rgba(226, 187, 103, 0.64);
+  transform: rotate(45deg);
+  position: relative;
+  animation: compass-turn 1.4s linear infinite;
+}
+
+.loading-compass::before {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  background: #8f2f22;
+  clip-path: polygon(50% 0, 100% 100%, 50% 78%, 0 100%);
+}
+
+@keyframes compass-turn {
+  to { transform: rotate(405deg); }
+}
+
+/* Tam ekran oyunda üst bar ince bir strateji HUD'ı gibi kalır; harita asıl sahneyi korur */
+.game-shell > .war-hud {
+  gap: 7px;
+  padding: 6px;
+}
+
+.game-shell .hud-faction-plate {
+  gap: 10px;
+  padding: 6px 10px;
+}
+
+.game-shell .war-hud .sigil {
+  width: 42px;
+  height: 42px;
+}
+
+.game-shell .war-hud .sigil span {
+  width: 17px;
+  height: 17px;
+  border-width: 3px;
+}
+
+.game-shell .hud-title-block h1 {
+  font-size: clamp(1.12rem, 1.55vw, 1.52rem);
+}
+
+.game-shell .hud-title-block p {
+  margin-top: 2px;
+  font-size: 0.74rem;
+}
+
+.game-shell .hud-time-command {
+  gap: 6px;
+  padding: 5px;
+}
+
+.game-shell .phase-plaque {
+  padding: 5px 8px;
+}
+
+.game-shell .clock-plaque {
+  column-gap: 8px;
+  padding: 4px 9px;
+}
+
+.game-shell .clock-plaque .clock {
+  font-size: clamp(1.55rem, 2vw, 2.12rem);
+}
+
+.game-shell .clock-plaque .phase-progress {
+  height: 4px;
+  margin: 3px 0 2px;
+}
+
+.game-shell .clock-plaque .phase-description {
+  font-size: 0.68rem;
+}
+
+.game-shell .command-actions {
+  gap: 5px;
+  min-width: 104px;
+}
+
+.game-shell .war-hud button {
+  min-height: 29px;
+  font-size: 0.68rem;
+}
+
+.game-shell .hud-side-console {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 6px;
+}
+
+.game-shell .minute-jumps {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 4px;
+}
+
+.game-shell .minute-jumps button {
+  min-height: 27px;
+  padding-inline: 2px;
+  font-size: 0.58rem;
+}
+
+.game-shell .reset-button {
+  min-height: 24px !important;
+  font-size: 0.58rem !important;
+}
+
+
+.game-shell .war-hud button {
+  padding-block: 2px;
+}
+
+.game-shell .minute-jumps button {
+  padding-block: 1px;
+}
+
+/* Projeksiyon yayını yönetim paneli değildir; skor ve harita temiz kalır */
+.projection-game .map-detail,
+.projection-game .map-detail-open {
+  display: none;
+}
+
+/* Ana menü ilk ekranda oyun menüsü gibi nefes alır; birincil eylem kaydırma gerektirmez */
+.portal-game .portal-title-plaque {
+  min-height: 190px;
+  padding: 22px 32px;
+}
+
+.portal-game .portal-title-copy .sigil {
+  width: clamp(64px, 6vw, 88px);
+  height: clamp(64px, 6vw, 88px);
+}
+
+.portal-game .portal-title-copy h1 {
+  font-size: clamp(2.2rem, 5vw, 4.7rem);
+}
+
+.portal-game .portal-title-copy p:not(.eyebrow) {
+  font-size: clamp(0.92rem, 1.15vw, 1.05rem);
+  line-height: 1.42;
+}
+
+.portal-game .menu-card {
+  min-height: 330px;
+  padding: 18px;
+}
+
+.portal-game .menu-card-index {
+  width: 38px;
+  height: 38px;
+  margin-bottom: 12px;
+}
+
+.portal-game .menu-card h2 {
+  font-size: clamp(1.25rem, 1.6vw, 1.65rem);
+}
+
+.portal-game .menu-card p:not(.eyebrow) {
+  line-height: 1.42;
+}
+
+.portal-game .menu-card .portal-selects {
+  gap: 8px;
+  margin: 10px 0;
+}
+
+.portal-game .portal-selects select {
+  min-height: 40px;
+}
+
+.portal-game .menu-card button {
+  min-height: 40px;
+}
+
+.portal-game .menu-chronicle {
+  padding: 18px;
+}
+
+.portal-game .map-camera-controls {
+  display: none;
+}
+
+@media (max-width: 560px) {
+  .game-player-left {
+    max-height: 36vh !important;
+    overscroll-behavior: contain;
   }
 }

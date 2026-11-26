@@ -121,7 +121,7 @@ export default function App() {
   const leaderLabel = leaders.length > 1 ? 'Beraberlik' : getKingdomDefinition(leaders[0]).name;
 
   return (
-    <div className={`game-shell ${projectionMode ? 'projection-game' : 'moderator-game'}`}>
+    <div className={`game-shell ${projectionMode ? 'projection-game' : `moderator-game ${commandOpen ? 'command-open' : 'command-closed'}`}`}>
       <div className="game-map-layer" aria-hidden="false">
         <InteractiveMap state={state} round={operationalRound} selectedKingdom={selectedKingdom} onSelect={setSelectedKingdom} />
       </div>
