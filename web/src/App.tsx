@@ -69,6 +69,7 @@ export default function App() {
   const { state, dispatch, networkStatus } = useGameState({ publishNetwork: viewMode === 'moderator' });
   const [selectedKingdom, setSelectedKingdom] = useState<KingdomId>('north');
   const [activeTab, setActiveTab] = useState<PanelTab>('operations');
+  const [commandOpen, setCommandOpen] = useState(() => window.innerWidth > 1100);
 
   function navigate(view: ViewMode, kingdom = playerKingdom, role = playerRole) {
     setViewMode(view);
@@ -79,30 +80,33 @@ export default function App() {
 
   if (viewMode === 'portal') {
     return (
-      <div className="app-shell portal-app">
-        <PortalView
-          networkStatus={networkStatus}
-          onEnterModerator={() => navigate('moderator')}
-          onEnterProjection={() => navigate('projection')}
-          onEnterPlayer={(kingdom, role) => navigate('player', kingdom, role)}
-        />
+      <div className="game-shell portal-game">
+        <div className="game-map-layer menu-map-layer">
+          <InteractiveMap state={state} round={0} selectedKingdom={selectedKingdom} onSelect={setSelectedKingdom} />
+        </div>
+        <div className="portal-menu-overlay">
+          <PortalView
+            networkStatus={networkStatus}
+            onEnterModerator={() => navigate('moderator')}
+            onEnterProjection={() => navigate('projection')}
+            onEnterPlayer={(kingdom, role) => navigate('player', kingdom, role)}
+          />
+        </div>
       </div>
     );
   }
 
   if (viewMode === 'player') {
     return (
-      <div className="app-shell player-app">
-        <PlayerView
-          state={state}
-          kingdomId={playerKingdom}
-          roleId={playerRole}
-          networkStatus={networkStatus}
-          onChangeKingdom={(kingdom) => navigate('player', kingdom, playerRole)}
-          onChangeRole={(role) => navigate('player', playerKingdom, role)}
-          onExit={() => navigate('portal')}
-        />
-      </div>
+      <PlayerView
+        state={state}
+        kingdomId={playerKingdom}
+        roleId={playerRole}
+        networkStatus={networkStatus}
+        onChangeKingdom={(kingdom) => navigate('player', kingdom, playerRole)}
+        onChangeRole={(role) => navigate('player', playerKingdom, role)}
+        onExit={() => navigate('portal')}
+      />
     );
   }
 
@@ -117,7 +121,11 @@ export default function App() {
   const leaderLabel = leaders.length > 1 ? 'Beraberlik' : getKingdomDefinition(leaders[0]).name;
 
   return (
-    <div className={`app-shell ${projectionMode ? 'projection-mode' : ''}`}>
+    <div className={`game-shell ${projectionMode ? 'projection-game' : 'moderator-game'}`}>
+      <div className="game-map-layer" aria-hidden="false">
+        <InteractiveMap state={state} round={operationalRound} selectedKingdom={selectedKingdom} onSelect={setSelectedKingdom} />
+      </div>
+
       <Header
         state={state}
         phase={phase}
@@ -126,90 +134,81 @@ export default function App() {
         onToggleProjection={() => navigate(projectionMode ? 'moderator' : 'projection')}
       />
 
-      <main className="main-layout war-room-layout">
-        <div className="board-column campaign-stage">
-          <section className="board-area war-table" aria-label="Krallık haritası">
-            <div className="board-heading map-caption">
-              <div>
-                <p className="eyebrow">Sefer haritası</p>
-                <h2>Altı krallığın güç dengesi</h2>
-              </div>
-              <p>Komuta masasındaki mühürlere dokun; seçili krallık kaydı haritanın üzerinde açılır.</p>
-            </div>
-
-            <section className="event-banner campaign-notice">
-              <div>
-                <p className="eyebrow">Aktif olay</p>
-                <h2>{event?.title ?? 'Hazırlık'}</h2>
-                <p>{event?.description ?? 'Oyun başlamadan önce krallıklar ve roller hazırlanır.'}</p>
-              </div>
-              <div className="event-side-stack">
-                <span className={`network-pill network-${networkStatus}`}>Ağ: {networkStatus}</span>
-                <div className="leader-badge">
-                  <span>Canlı lider</span>
-                  <strong>{leaderLabel}</strong>
-                </div>
-              </div>
-            </section>
-
-            <div className="map-frame">
-              <InteractiveMap state={state} round={operationalRound} selectedKingdom={selectedKingdom} onSelect={setSelectedKingdom} />
-            </div>
-          </section>
-
-          {!projectionMode ? (
-            <details className="ledger-drawer" open>
-              <summary>
-                <span>Meclis kayıtları</span>
-                <small>Prestij tablosu ve moderatör işlem günlüğü</small>
-              </summary>
-              <div className="bottom-grid ledger-grid">
-                <Scoreboard state={state} revealSecrets />
-                <ActivityLog state={state} dispatch={dispatch} />
-              </div>
-            </details>
-          ) : null}
+      <section className="event-banner campaign-notice game-event-feed">
+        <div>
+          <p className="eyebrow">Aktif olay</p>
+          <h2>{event?.title ?? 'Hazırlık'}</h2>
+          <p>{event?.description ?? 'Oyun başlamadan önce krallıklar ve roller hazırlanır.'}</p>
         </div>
+        <div className="event-side-stack">
+          <span className={`network-pill network-${networkStatus}`}>Ağ: {networkStatus}</span>
+          <div className="leader-badge">
+            <span>Canlı lider</span>
+            <strong>{leaderLabel}</strong>
+          </div>
+        </div>
+      </section>
 
-        <aside className="control-dock council-dock" aria-label="Moderatör kontrolleri">
-          {projectionMode ? (
-            <Scoreboard state={state} expandFirst={false} />
-          ) : (
-            <>
-              <div className="council-dock-heading">
-                <p className="eyebrow">Moderatör meclisi</p>
-                <h2>Komuta masası</h2>
-                <span>{getKingdomDefinition(selectedKingdom).name} seçili</span>
-              </div>
-              <nav className="panel-tabs council-tabs" aria-label="Moderatör paneli">
-                {(Object.keys(tabLabels) as PanelTab[]).map((tab) => (
-                  <button
-                    key={tab}
-                    type="button"
-                    className={activeTab === tab ? 'active-tab' : ''}
-                    onClick={() => setActiveTab(tab)}
-                  >
-                    <span className="tab-seal">{tabLabels[tab].seal}</span>
-                    <span className="tab-copy">
-                      <strong>{tabLabels[tab].title}</strong>
-                      <small>{tabLabels[tab].hint}</small>
-                    </span>
-                  </button>
-                ))}
-              </nav>
-              {activeTab === 'operations' ? (
-                <OperationsPanel state={state} dispatch={dispatch} round={operationalRound} selectedKingdom={selectedKingdom} />
-              ) : null}
-              {activeTab === 'agreements' ? (
-                <AgreementsPanel state={state} dispatch={dispatch} round={operationalRound} selectedKingdom={selectedKingdom} />
-              ) : null}
-              {activeTab === 'events' ? (
-                <EventsPanel state={state} dispatch={dispatch} round={operationalRound} selectedKingdom={selectedKingdom} />
-              ) : null}
-            </>
-          )}
+      {projectionMode ? (
+        <aside className="projection-score-overlay" aria-label="Canlı sıralama">
+          <Scoreboard state={state} expandFirst={false} />
         </aside>
-      </main>
+      ) : (
+        <>
+          <button
+            className={`command-drawer-toggle ${commandOpen ? 'is-open' : ''}`}
+            type="button"
+            onClick={() => setCommandOpen((open) => !open)}
+            aria-expanded={commandOpen}
+          >
+            <span>{commandOpen ? 'Masayı kapat' : 'Komuta masası'}</span>
+          </button>
+
+          <aside className={`control-dock council-dock game-command-drawer ${commandOpen ? 'open' : ''}`} aria-label="Moderatör kontrolleri">
+            <div className="council-dock-heading">
+              <p className="eyebrow">Moderatör meclisi</p>
+              <h2>Komuta masası</h2>
+              <span>{getKingdomDefinition(selectedKingdom).name} seçili</span>
+            </div>
+            <nav className="panel-tabs council-tabs" aria-label="Moderatör paneli">
+              {(Object.keys(tabLabels) as PanelTab[]).map((tab) => (
+                <button
+                  key={tab}
+                  type="button"
+                  className={activeTab === tab ? 'active-tab' : ''}
+                  onClick={() => setActiveTab(tab)}
+                >
+                  <span className="tab-seal">{tabLabels[tab].seal}</span>
+                  <span className="tab-copy">
+                    <strong>{tabLabels[tab].title}</strong>
+                    <small>{tabLabels[tab].hint}</small>
+                  </span>
+                </button>
+              ))}
+            </nav>
+            {activeTab === 'operations' ? (
+              <OperationsPanel state={state} dispatch={dispatch} round={operationalRound} selectedKingdom={selectedKingdom} />
+            ) : null}
+            {activeTab === 'agreements' ? (
+              <AgreementsPanel state={state} dispatch={dispatch} round={operationalRound} selectedKingdom={selectedKingdom} />
+            ) : null}
+            {activeTab === 'events' ? (
+              <EventsPanel state={state} dispatch={dispatch} round={operationalRound} selectedKingdom={selectedKingdom} />
+            ) : null}
+          </aside>
+
+          <details className="ledger-drawer game-ledger-drawer">
+            <summary>
+              <span>Meclis kayıtları</span>
+              <small>Prestij tablosu ve moderatör işlem günlüğü</small>
+            </summary>
+            <div className="bottom-grid ledger-grid">
+              <Scoreboard state={state} revealSecrets />
+              <ActivityLog state={state} dispatch={dispatch} />
+            </div>
+          </details>
+        </>
+      )}
     </div>
   );
 }

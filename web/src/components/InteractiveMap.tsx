@@ -1,4 +1,4 @@
-import { useState, type CSSProperties } from 'react';
+import { useLayoutEffect, useRef, useState, type CSSProperties, type PointerEvent, type WheelEvent } from 'react';
 import { BUILDINGS, RESOURCE_SHORT_LABELS, TAX_RULES } from '../data/gameData';
 import type { GameState, KingdomId, ResourceKey } from '../types';
 import { calculateKingdomScore, getKingdomDefinition, productionForKingdom, RESOURCE_KEYS } from '../utils/gameMath';
@@ -10,11 +10,16 @@ interface InteractiveMapProps {
   onSelect: (kingdomId: KingdomId) => void;
 }
 
+const WORLD_WIDTH = 1600;
+const WORLD_HEIGHT = 1000;
+const MIN_ZOOM = 1;
+const MAX_ZOOM = 2.8;
+
 const positions: Record<KingdomId, { x: number; y: number }> = {
-  north: { x: 50, y: 14 },
-  west: { x: 18, y: 42 },
+  north: { x: 50, y: 23 },
+  west: { x: 22, y: 42 },
   center: { x: 50, y: 48 },
-  east: { x: 82, y: 42 },
+  east: { x: 68, y: 42 },
   south: { x: 31, y: 79 },
   gold: { x: 69, y: 79 },
 };
@@ -67,6 +72,11 @@ const hillMarkers = [
   { x: 60, y: 68, s: 2.3 }, { x: 69, y: 72, s: 1.9 }, { x: 12, y: 55, s: 2.1 },
 ];
 
+const hamletMarkers = [
+  { x: 36, y: 27, s: 1.8 }, { x: 63, y: 54, s: 1.7 }, { x: 28, y: 61, s: 1.6 },
+  { x: 74, y: 66, s: 1.8 }, { x: 47, y: 86, s: 1.6 }, { x: 86, y: 52, s: 1.4 },
+];
+
 const chestPositions = [
   { x: 12, y: 18 },
   { x: 34, y: 25 },
@@ -79,159 +89,311 @@ const chestPositions = [
   { x: 79, y: 91 },
 ];
 
+interface Camera {
+  x: number;
+  y: number;
+  zoom: number;
+  ready: boolean;
+}
+
 export function InteractiveMap({ state, round, selectedKingdom, onSelect }: InteractiveMapProps) {
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const metricsRef = useRef({ width: 0, height: 0, fit: 1 });
+  const dragRef = useRef<{ pointerId: number; startX: number; startY: number; cameraX: number; cameraY: number } | null>(null);
   const [detailOpen, setDetailOpen] = useState(() => window.innerWidth > 760);
+  const [dragging, setDragging] = useState(false);
+  const [camera, setCamera] = useState<Camera>({ x: 0, y: 0, zoom: 1, ready: false });
+
   const selectedDefinition = getKingdomDefinition(selectedKingdom);
   const selectedState = state.kingdoms[selectedKingdom];
   const selectedScore = calculateKingdomScore(state, selectedKingdom);
   const production = productionForKingdom(selectedState, Math.max(1, round));
   const currentTax = round > 0 ? selectedState.taxHistory[round] : undefined;
 
+  function constrainCamera(x: number, y: number, zoom: number): Camera {
+    const { width, height, fit } = metricsRef.current;
+    const scale = fit * zoom;
+    const minX = Math.min(0, width - WORLD_WIDTH * scale);
+    const minY = Math.min(0, height - WORLD_HEIGHT * scale);
+    return {
+      x: Math.min(0, Math.max(minX, x)),
+      y: Math.min(0, Math.max(minY, y)),
+      zoom,
+      ready: true,
+    };
+  }
+
+  function resetCamera() {
+    const { width, height, fit } = metricsRef.current;
+    setCamera(constrainCamera((width - WORLD_WIDTH * fit) / 2, (height - WORLD_HEIGHT * fit) / 2, 1));
+  }
+
+  useLayoutEffect(() => {
+    const viewport = viewportRef.current;
+    if (!viewport) return;
+    const viewportElement = viewport;
+
+    function measure() {
+      const rect = viewportElement.getBoundingClientRect();
+      metricsRef.current = {
+        width: rect.width,
+        height: rect.height,
+        fit: Math.max(rect.width / WORLD_WIDTH, rect.height / WORLD_HEIGHT),
+      };
+      setCamera((current) => (
+        current.ready
+          ? constrainCamera(current.x, current.y, current.zoom)
+          : constrainCamera((rect.width - WORLD_WIDTH * metricsRef.current.fit) / 2, (rect.height - WORLD_HEIGHT * metricsRef.current.fit) / 2, 1)
+      ));
+    }
+
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(viewport);
+    return () => observer.disconnect();
+  }, []);
+
+  function zoomAt(clientX: number, clientY: number, factor: number) {
+    const viewport = viewportRef.current;
+    if (!viewport) return;
+    const rect = viewport.getBoundingClientRect();
+    const pointerX = clientX - rect.left;
+    const pointerY = clientY - rect.top;
+
+    setCamera((current) => {
+      const nextZoom = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, current.zoom * factor));
+      const oldScale = metricsRef.current.fit * current.zoom;
+      const nextScale = metricsRef.current.fit * nextZoom;
+      const worldX = (pointerX - current.x) / oldScale;
+      const worldY = (pointerY - current.y) / oldScale;
+      return constrainCamera(pointerX - worldX * nextScale, pointerY - worldY * nextScale, nextZoom);
+    });
+  }
+
+  function zoomCenter(factor: number) {
+    const viewport = viewportRef.current;
+    if (!viewport) return;
+    const rect = viewport.getBoundingClientRect();
+    zoomAt(rect.left + rect.width / 2, rect.top + rect.height / 2, factor);
+  }
+
+  function onWheel(event: WheelEvent<HTMLDivElement>) {
+    event.preventDefault();
+    zoomAt(event.clientX, event.clientY, event.deltaY < 0 ? 1.16 : 0.86);
+  }
+
+  function onPointerDown(event: PointerEvent<HTMLDivElement>) {
+    if (event.button !== 0) return;
+    if ((event.target as HTMLElement).closest('button, input, select, textarea, a, .map-detail')) return;
+    dragRef.current = {
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      startY: event.clientY,
+      cameraX: camera.x,
+      cameraY: camera.y,
+    };
+    event.currentTarget.setPointerCapture(event.pointerId);
+    setDragging(true);
+  }
+
+  function onPointerMove(event: PointerEvent<HTMLDivElement>) {
+    const drag = dragRef.current;
+    if (!drag || drag.pointerId !== event.pointerId) return;
+    setCamera((current) => constrainCamera(
+      drag.cameraX + event.clientX - drag.startX,
+      drag.cameraY + event.clientY - drag.startY,
+      current.zoom,
+    ));
+  }
+
+  function endDrag(event: PointerEvent<HTMLDivElement>) {
+    if (dragRef.current?.pointerId !== event.pointerId) return;
+    dragRef.current = null;
+    setDragging(false);
+  }
+
+  const worldScale = metricsRef.current.fit * camera.zoom;
+
   return (
-    <>
-      <div className="interactive-map" aria-label="İnteraktif krallık haritası">
-      <svg className="map-terrain" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-        <defs>
-          <linearGradient id="river" x1="0" x2="1">
-            <stop offset="0" stopColor="rgba(91, 123, 122, 0.48)" />
-            <stop offset="1" stopColor="rgba(91, 123, 122, 0.16)" />
-          </linearGradient>
-          <filter id="terrain-rough" x="-20%" y="-20%" width="140%" height="140%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="2" seed="11" result="noise" />
-            <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.6" />
-          </filter>
-        </defs>
-        <path className="map-terrain-shade" d="M 5 58 C 19 43, 34 42, 47 47 C 61 53, 72 49, 95 32 L 105 105 L -5 105 Z" />
-        <path className="map-sea" d="M -5 91 C 20 83, 40 96, 64 88 C 79 83, 91 88, 105 80 L 105 105 L -5 105 Z" />
-        <path className="map-highland" filter="url(#terrain-rough)" d="M 37 38 C 44 25, 58 22, 67 29 C 72 35, 67 44, 56 47 C 46 50, 36 47, 37 38 Z" />
-        <path className="map-forest-mass" filter="url(#terrain-rough)" d="M 9 34 C 15 24, 29 24, 36 34 C 39 43, 28 48, 17 45 C 9 43, 6 39, 9 34 Z" />
-        <g className="map-fields" aria-hidden="true">
-          <path d="M 39 7 L 58 10 M 38 10 L 59 13 M 39 13 L 58 16 M 43 5 L 42 17 M 49 6 L 48 18 M 55 8 L 54 18" />
-        </g>
-        <path className="map-contour" d="M 35 53 C 45 48, 59 49, 70 54" />
-        <path className="map-contour" d="M 40 59 C 51 55, 62 56, 74 61" />
-        <path className="map-contour" d="M 8 49 C 17 45, 28 46, 36 51" />
-        <path className="map-contour" d="M 58 18 C 67 15, 78 16, 87 20" />
-        <path className="map-river" d="M -4 70 C 20 58, 22 39, 45 39 C 68 39, 69 23, 104 12" />
-        <path className="map-coast" d="M -4 91 C 20 83, 40 96, 64 88 C 79 83, 91 88, 104 80" />
-        <g className="map-waves" aria-hidden="true">
-          <path d="M 16 94 Q 19 92 22 94 M 35 96 Q 38 94 41 96 M 70 92 Q 73 90 76 92 M 86 94 Q 89 92 92 94" />
-        </g>
-        <g className="map-mountain-range" aria-hidden="true">
-          {mountainMarkers.map((marker) => (
+    <div
+      ref={viewportRef}
+      className={`interactive-map game-map-viewport ${dragging ? 'dragging' : ''}`}
+      aria-label="İnteraktif krallık haritası"
+      onWheel={onWheel}
+      onPointerDown={onPointerDown}
+      onPointerMove={onPointerMove}
+      onPointerUp={endDrag}
+      onPointerCancel={endDrag}
+    >
+      <div
+        className="map-world"
+        style={{
+          width: WORLD_WIDTH,
+          height: WORLD_HEIGHT,
+          transform: `matrix(${worldScale}, 0, 0, ${worldScale}, ${camera.x}, ${camera.y})`,
+        }}
+      >
+        <svg className="map-terrain" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+          <defs>
+            <linearGradient id="river" x1="0" x2="1">
+              <stop offset="0" stopColor="rgba(91, 123, 122, 0.48)" />
+              <stop offset="1" stopColor="rgba(91, 123, 122, 0.16)" />
+            </linearGradient>
+            <filter id="terrain-rough" x="-20%" y="-20%" width="140%" height="140%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="2" seed="11" result="noise" />
+              <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.6" />
+            </filter>
+          </defs>
+          <path className="map-terrain-shade" d="M 5 58 C 19 43, 34 42, 47 47 C 61 53, 72 49, 95 32 L 105 105 L -5 105 Z" />
+          <path className="map-sea" d="M -5 91 C 20 83, 40 96, 64 88 C 79 83, 91 88, 105 80 L 105 105 L -5 105 Z" />
+          <path className="map-highland" filter="url(#terrain-rough)" d="M 37 38 C 44 25, 58 22, 67 29 C 72 35, 67 44, 56 47 C 46 50, 36 47, 37 38 Z" />
+          <path className="map-forest-mass" filter="url(#terrain-rough)" d="M 9 34 C 15 24, 29 24, 36 34 C 39 43, 28 48, 17 45 C 9 43, 6 39, 9 34 Z" />
+          <g className="map-fields" aria-hidden="true">
+            <path d="M 39 7 L 58 10 M 38 10 L 59 13 M 39 13 L 58 16 M 43 5 L 42 17 M 49 6 L 48 18 M 55 8 L 54 18" />
+          </g>
+          <path className="map-contour" d="M 35 53 C 45 48, 59 49, 70 54" />
+          <path className="map-contour" d="M 40 59 C 51 55, 62 56, 74 61" />
+          <path className="map-contour" d="M 8 49 C 17 45, 28 46, 36 51" />
+          <path className="map-contour" d="M 58 18 C 67 15, 78 16, 87 20" />
+          <path className="map-river" d="M -4 70 C 20 58, 22 39, 45 39 C 68 39, 69 23, 104 12" />
+          <path className="map-coast" d="M -4 91 C 20 83, 40 96, 64 88 C 79 83, 91 88, 104 80" />
+          <g className="map-waves" aria-hidden="true">
+            <path d="M 16 94 Q 19 92 22 94 M 35 96 Q 38 94 41 96 M 70 92 Q 73 90 76 92 M 86 94 Q 89 92 92 94" />
+          </g>
+          <g className="map-mountain-range" aria-hidden="true">
+            {mountainMarkers.map((marker) => (
+              <g key={`${marker.x}-${marker.y}`}>
+                <path
+                  className="mountain-body"
+                  d={`M ${marker.x - marker.s * 0.58} ${marker.y + marker.s * 0.38} L ${marker.x - marker.s * 0.25} ${marker.y - marker.s * 0.02} L ${marker.x} ${marker.y - marker.s * 0.52} L ${marker.x + marker.s * 0.24} ${marker.y - marker.s * 0.02} L ${marker.x + marker.s * 0.58} ${marker.y + marker.s * 0.38} Z`}
+                />
+                <path
+                  className="mountain-ridge"
+                  d={`M ${marker.x} ${marker.y - marker.s * 0.52} L ${marker.x - marker.s * 0.08} ${marker.y - marker.s * 0.18} M ${marker.x} ${marker.y - marker.s * 0.52} L ${marker.x + marker.s * 0.1} ${marker.y - marker.s * 0.13}`}
+                />
+                <path
+                  className="mountain-shadow"
+                  d={`M ${marker.x - marker.s * 0.46} ${marker.y + marker.s * 0.3} C ${marker.x - marker.s * 0.12} ${marker.y + marker.s * 0.48}, ${marker.x + marker.s * 0.2} ${marker.y + marker.s * 0.48}, ${marker.x + marker.s * 0.5} ${marker.y + marker.s * 0.3}`}
+                />
+              </g>
+            ))}
+          </g>
+          <g className="map-tree-clusters" aria-hidden="true">
+            {forestMarkers.map((marker) => (
+              <g key={`${marker.x}-${marker.y}`}>
+                <path
+                  className="tree-crown"
+                  d={`M ${marker.x} ${marker.y - marker.s * 0.55} L ${marker.x - marker.s * 0.43} ${marker.y + marker.s * 0.2} L ${marker.x + marker.s * 0.43} ${marker.y + marker.s * 0.2} Z`}
+                />
+                <path
+                  className="tree-trunk"
+                  d={`M ${marker.x - marker.s * 0.07} ${marker.y + marker.s * 0.16} L ${marker.x + marker.s * 0.07} ${marker.y + marker.s * 0.16} L ${marker.x + marker.s * 0.07} ${marker.y + marker.s * 0.43} L ${marker.x - marker.s * 0.07} ${marker.y + marker.s * 0.43} Z`}
+                />
+              </g>
+            ))}
+          </g>
+          <g className="map-hills" aria-hidden="true">
+            {hillMarkers.map((marker) => (
+              <g key={`${marker.x}-${marker.y}`}>
+                <path
+                  className="hill-body"
+                  d={`M ${marker.x - marker.s} ${marker.y + marker.s * 0.28} Q ${marker.x} ${marker.y - marker.s * 0.58} ${marker.x + marker.s} ${marker.y + marker.s * 0.28} Z`}
+                />
+                <path
+                  className="hill-hatch"
+                  d={`M ${marker.x - marker.s * 0.45} ${marker.y + marker.s * 0.08} Q ${marker.x} ${marker.y - marker.s * 0.24} ${marker.x + marker.s * 0.45} ${marker.y + marker.s * 0.08}`}
+                />
+              </g>
+            ))}
+          </g>
+          <g className="map-hamlets" aria-hidden="true">
+          {hamletMarkers.map((marker) => (
             <g key={`${marker.x}-${marker.y}`}>
               <path
-                className="mountain-body"
-                d={`M ${marker.x - marker.s * 0.58} ${marker.y + marker.s * 0.38} L ${marker.x - marker.s * 0.25} ${marker.y - marker.s * 0.02} L ${marker.x} ${marker.y - marker.s * 0.52} L ${marker.x + marker.s * 0.24} ${marker.y - marker.s * 0.02} L ${marker.x + marker.s * 0.58} ${marker.y + marker.s * 0.38} Z`}
+                className="hamlet-roof"
+                d={`M ${marker.x - marker.s} ${marker.y} L ${marker.x} ${marker.y - marker.s * 0.72} L ${marker.x + marker.s} ${marker.y} Z`}
               />
               <path
-                className="mountain-ridge"
-                d={`M ${marker.x} ${marker.y - marker.s * 0.52} L ${marker.x - marker.s * 0.08} ${marker.y - marker.s * 0.18} M ${marker.x} ${marker.y - marker.s * 0.52} L ${marker.x + marker.s * 0.1} ${marker.y - marker.s * 0.13}`}
-              />
-              <path
-                className="mountain-shadow"
-                d={`M ${marker.x - marker.s * 0.46} ${marker.y + marker.s * 0.3} C ${marker.x - marker.s * 0.12} ${marker.y + marker.s * 0.48}, ${marker.x + marker.s * 0.2} ${marker.y + marker.s * 0.48}, ${marker.x + marker.s * 0.5} ${marker.y + marker.s * 0.3}`}
-              />
-            </g>
-          ))}
-        </g>
-        <g className="map-tree-clusters" aria-hidden="true">
-          {forestMarkers.map((marker) => (
-            <g key={`${marker.x}-${marker.y}`}>
-              <path
-                className="tree-crown"
-                d={`M ${marker.x} ${marker.y - marker.s * 0.55} L ${marker.x - marker.s * 0.43} ${marker.y + marker.s * 0.2} L ${marker.x + marker.s * 0.43} ${marker.y + marker.s * 0.2} Z`}
-              />
-              <path
-                className="tree-trunk"
-                d={`M ${marker.x - marker.s * 0.07} ${marker.y + marker.s * 0.16} L ${marker.x + marker.s * 0.07} ${marker.y + marker.s * 0.16} L ${marker.x + marker.s * 0.07} ${marker.y + marker.s * 0.43} L ${marker.x - marker.s * 0.07} ${marker.y + marker.s * 0.43} Z`}
-              />
-            </g>
-          ))}
-        </g>
-        <g className="map-hills" aria-hidden="true">
-          {hillMarkers.map((marker) => (
-            <g key={`${marker.x}-${marker.y}`}>
-              <path
-                className="hill-body"
-                d={`M ${marker.x - marker.s} ${marker.y + marker.s * 0.28} Q ${marker.x} ${marker.y - marker.s * 0.58} ${marker.x + marker.s} ${marker.y + marker.s * 0.28} Z`}
-              />
-              <path
-                className="hill-hatch"
-                d={`M ${marker.x - marker.s * 0.45} ${marker.y + marker.s * 0.08} Q ${marker.x} ${marker.y - marker.s * 0.24} ${marker.x + marker.s * 0.45} ${marker.y + marker.s * 0.08}`}
+                className="hamlet-house"
+                d={`M ${marker.x - marker.s * 0.72} ${marker.y} L ${marker.x + marker.s * 0.72} ${marker.y} L ${marker.x + marker.s * 0.72} ${marker.y + marker.s * 0.62} L ${marker.x - marker.s * 0.72} ${marker.y + marker.s * 0.62} Z`}
               />
             </g>
           ))}
         </g>
         {roads.map(([from, to], index) => (
-          <path
-            key={`${from}-${to}`}
-            className="map-road"
-            d={roadPath(from, to, index)}
-          />
-        ))}
-      </svg>
+            <path
+              key={`${from}-${to}`}
+              className="map-road"
+              d={roadPath(from, to, index)}
+            />
+          ))}
+        </svg>
 
-      <div className="map-landmark landmark-harbor" style={{ left: '72%', top: '88%' }} />
-      <div className="map-compass" aria-hidden="true"><span /></div>
-      <span className="map-region-label label-north" aria-hidden="true">Kuzey tarlaları</span>
-      <span className="map-region-label label-west" aria-hidden="true">Batı ormanları</span>
-      <span className="map-region-label label-east" aria-hidden="true">Doğu madenleri</span>
-      <span className="map-region-label label-south" aria-hidden="true">Güney liman yolu</span>
+        <div className="map-landmark landmark-harbor" style={{ left: '72%', top: '88%' }} />
+        <div className="map-compass" aria-hidden="true"><span /></div>
+        <span className="map-region-label label-north" aria-hidden="true">Kuzey tarlaları</span>
+        <span className="map-region-label label-west" aria-hidden="true">Batı ormanları</span>
+        <span className="map-region-label label-east" aria-hidden="true">Doğu madenleri</span>
+        <span className="map-region-label label-south" aria-hidden="true">Güney liman yolu</span>
 
-      {state.chests.map((chest, index) => {
-        const position = chestPositions[index] ?? { x: 50, y: 50 };
-        return (
-          <span
-            key={chest.id}
-            className={`map-chest chest-${chest.status}`}
-            style={{ left: `${position.x}%`, top: `${position.y}%` }}
-            title={`${chest.title} · ${chest.status === 'claimed' ? 'açıldı' : chest.status === 'available' ? 'açık' : 'kapalı'}`}
-          >
-            {chest.id}
-          </span>
-        );
-      })}
-
-      {(Object.keys(positions) as KingdomId[]).map((kingdomId) => {
-        const definition = getKingdomDefinition(kingdomId);
-        const kingdom = state.kingdoms[kingdomId];
-        const score = calculateKingdomScore(state, kingdomId);
-        const position = positions[kingdomId];
-        return (
-          <button
-            key={kingdomId}
-            type="button"
-            className={`map-kingdom ${selectedKingdom === kingdomId ? 'selected' : ''}`}
-            style={
-              {
-                left: `${position.x}%`,
-                top: `${position.y}%`,
-                '--kingdom-color': definition.color,
-                '--kingdom-soft': definition.softColor,
-              } as CSSProperties
-            }
-            onClick={() => {
-              onSelect(kingdomId);
-              setDetailOpen(true);
-            }}
-            aria-label={`${definition.name} krallığını seç`}
-          >
-            <span className="map-keep" aria-hidden="true">
-              <i />
+        {state.chests.map((chest, index) => {
+          const position = chestPositions[index] ?? { x: 50, y: 50 };
+          return (
+            <span
+              key={chest.id}
+              className={`map-chest chest-${chest.status}`}
+              style={{ left: `${position.x}%`, top: `${position.y}%` }}
+              title={`${chest.title} · ${chest.status === 'claimed' ? 'açıldı' : chest.status === 'available' ? 'açık' : 'kapalı'}`}
+            >
+              {chest.id}
             </span>
-            <span className="map-kingdom-label">
-              <small>{definition.epithet}</small>
-              <strong>{definition.name}</strong>
-            </span>
-            <span className="map-kingdom-stats">
-              <b>{score.total} PP</b>
-              <em>{kingdom.military} asker</em>
-            </span>
-          </button>
-        );
-      })}
+          );
+        })}
 
+        {(Object.keys(positions) as KingdomId[]).map((kingdomId) => {
+          const definition = getKingdomDefinition(kingdomId);
+          const kingdom = state.kingdoms[kingdomId];
+          const score = calculateKingdomScore(state, kingdomId);
+          const position = positions[kingdomId];
+          return (
+            <button
+              key={kingdomId}
+              type="button"
+              className={`map-kingdom ${selectedKingdom === kingdomId ? 'selected' : ''}`}
+              style={
+                {
+                  left: `${position.x}%`,
+                  top: `${position.y}%`,
+                  '--kingdom-color': definition.color,
+                  '--kingdom-soft': definition.softColor,
+                } as CSSProperties
+              }
+              onClick={() => {
+                onSelect(kingdomId);
+                setDetailOpen(true);
+              }}
+              aria-label={`${definition.name} krallığını seç`}
+            >
+              <span className="map-keep" aria-hidden="true">
+                <i />
+              </span>
+              <span className="map-kingdom-label">
+                <small>{definition.epithet}</small>
+                <strong>{definition.name}</strong>
+              </span>
+              <span className="map-kingdom-stats">
+                <b>{score.total} PP</b>
+                <em>{kingdom.military} asker</em>
+              </span>
+            </button>
+          );
+        })}
+      </div>
+
+      <div className="map-camera-controls" aria-label="Harita kamera kontrolleri">
+        <button type="button" onClick={() => zoomCenter(1.25)} aria-label="Yakınlaştır">+</button>
+        <button type="button" onClick={() => zoomCenter(0.8)} aria-label="Uzaklaştır">−</button>
+        <button type="button" onClick={resetCamera} aria-label="Haritayı sıfırla">⌂</button>
       </div>
 
       {detailOpen ? (
@@ -270,6 +432,6 @@ export function InteractiveMap({ state, round, selectedKingdom, onSelect }: Inte
           {selectedDefinition.name} kaydı
         </button>
       )}
-    </>
+    </div>
   );
 }

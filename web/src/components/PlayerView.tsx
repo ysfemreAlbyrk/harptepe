@@ -28,8 +28,12 @@ export function PlayerView({ state, kingdomId, roleId, networkStatus, onChangeKi
   const canSeeObjective = roleId === 'monarch' || roleId === 'vizier';
 
   return (
-    <main className="player-shell player-council-shell">
-      <section className="player-header player-war-hud">
+    <main className="game-shell player-game-shell">
+      <div className="game-map-layer">
+        <InteractiveMap state={state} round={round} selectedKingdom={previewKingdom} onSelect={setPreviewKingdom} />
+      </div>
+
+      <section className="player-header player-war-hud game-player-hud">
         <div className="player-title-block">
           <span className="hud-kicker">Oyuncu meclis kaydı</span>
           <h1>{definition.name} · {role.name}</h1>
@@ -43,94 +47,79 @@ export function PlayerView({ state, kingdomId, roleId, networkStatus, onChangeKi
         </div>
       </section>
 
-      <div className="player-layout player-council-layout">
-        <aside className="ruler-panel">
-          <section className="ruler-identity-card" style={{ '--kingdom-color': definition.color } as CSSProperties}>
-            <div className="banner-shield" aria-hidden="true">
-              <span>{definition.name.slice(0, 1)}</span>
-            </div>
-            <div>
-              <p className="eyebrow">Krallık sancağı</p>
-              <h2>{definition.name}</h2>
-              <p>{definition.epithet}</p>
-            </div>
-          </section>
-
-          <section className="player-identity-card council-select-card">
-            <label>
-              <span>Krallık</span>
-              <select value={kingdomId} onChange={(event) => {
-                const next = event.target.value as KingdomId;
-                setPreviewKingdom(next);
-                onChangeKingdom(next);
-              }}>
-                {KINGDOMS.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}
-              </select>
-            </label>
-            <label>
-              <span>Rol</span>
-              <select value={roleId} onChange={(event) => onChangeRole(event.target.value as PlayerRoleId)}>
-                {PLAYER_ROLES.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}
-              </select>
-            </label>
-            <p>Bu ekran salt okunurdur. İşlem gerektiğinde moderatör komuta masasına başvur.</p>
-          </section>
-
-          <section className="player-card kingdom-status-card ruler-ledger-card">
-            <p className="eyebrow">Krallık durumun</p>
-            <h2>Hazine kaydı</h2>
-            <div className="player-score-line"><span>Prestij</span><strong>{score.total} PP</strong></div>
-            <div className="player-score-line"><span>Asker</span><strong>{kingdom.military}</strong></div>
-            <div className="player-score-line"><span>Üretim</span><strong>{RESOURCE_KEYS.filter((key) => production[key] > 0).map((key) => `+${production[key]} ${RESOURCE_LABELS[key]}`).join(', ') || '—'}</strong></div>
-            <div className="player-resource-list">
-              {RESOURCE_KEYS.map((key) => (
-                <div key={key} className={`resource-${key}`}>
-                  <span>{RESOURCE_LABELS[key]}</span>
-                  <strong>{kingdom.resources[key]}</strong>
-                </div>
-              ))}
-            </div>
-            {canSeeObjective && objective ? (
-              <div className="secret-objective-box">
-                <span>Gizli hedef</span>
-                <strong>{objective.name}</strong>
-                <p>{objective.description}</p>
-              </div>
-            ) : (
-              <p className="muted-note">Gizli hedef bilgisi Hükümdar ve Vezir görünümünde gösterilir.</p>
-            )}
-          </section>
-        </aside>
-
-        <section className="player-map-panel war-table">
-          <div className="board-heading map-caption">
-            <div>
-              <p className="eyebrow">Canlı sefer haritası</p>
-              <h2>Krallıkların gücü</h2>
-            </div>
-            <p>Diğer krallık mühürlerine dokunarak açık kaynak ve güç bilgisini inceleyebilirsin.</p>
+      <aside className="ruler-panel game-player-left" aria-label="Krallık bilgileri">
+        <section className="ruler-identity-card" style={{ '--kingdom-color': definition.color } as CSSProperties}>
+          <div className="banner-shield" aria-hidden="true">
+            <span>{definition.name.slice(0, 1)}</span>
           </div>
-          <div className="map-frame">
-            <InteractiveMap state={state} round={round} selectedKingdom={previewKingdom} onSelect={setPreviewKingdom} />
+          <div>
+            <p className="eyebrow">Krallık sancağı</p>
+            <h2>{definition.name}</h2>
+            <p>{definition.epithet}</p>
           </div>
         </section>
 
-        <aside className="player-side-panel council-notes">
-          <section className="player-card role-guide-card">
-            <div className="role-guide-heading">
-              <span className="role-monogram" aria-hidden="true">{role.name.slice(0, 1)}</span>
-              <div>
-                <p className="eyebrow">Rol rehberin</p>
-                <h2>{role.name}</h2>
+        <section className="player-identity-card council-select-card">
+          <label>
+            <span>Krallık</span>
+            <select value={kingdomId} onChange={(event) => {
+              const next = event.target.value as KingdomId;
+              setPreviewKingdom(next);
+              onChangeKingdom(next);
+            }}>
+              {KINGDOMS.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}
+            </select>
+          </label>
+          <label>
+            <span>Rol</span>
+            <select value={roleId} onChange={(event) => onChangeRole(event.target.value as PlayerRoleId)}>
+              {PLAYER_ROLES.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}
+            </select>
+          </label>
+          <p>Bu ekran salt okunurdur. İşlem gerektiğinde moderatör komuta masasına başvur.</p>
+        </section>
+
+        <section className="player-card kingdom-status-card ruler-ledger-card">
+          <p className="eyebrow">Krallık durumun</p>
+          <h2>Hazine kaydı</h2>
+          <div className="player-score-line"><span>Prestij</span><strong>{score.total} PP</strong></div>
+          <div className="player-score-line"><span>Asker</span><strong>{kingdom.military}</strong></div>
+          <div className="player-score-line"><span>Üretim</span><strong>{RESOURCE_KEYS.filter((key) => production[key] > 0).map((key) => `+${production[key]} ${RESOURCE_LABELS[key]}`).join(', ') || '—'}</strong></div>
+          <div className="player-resource-list">
+            {RESOURCE_KEYS.map((key) => (
+              <div key={key} className={`resource-${key}`}>
+                <span>{RESOURCE_LABELS[key]}</span>
+                <strong>{kingdom.resources[key]}</strong>
               </div>
+            ))}
+          </div>
+          {canSeeObjective && objective ? (
+            <div className="secret-objective-box">
+              <span>Gizli hedef</span>
+              <strong>{objective.name}</strong>
+              <p>{objective.description}</p>
             </div>
-            <h3>Sorumlulukların</h3>
-            <ul>{role.responsibilities.map((item) => <li key={item}>{item}</li>)}</ul>
-            <h3>İpuçları</h3>
-            <ul>{role.tips.map((item) => <li key={item}>{item}</li>)}</ul>
-          </section>
-        </aside>
-      </div>
+          ) : (
+            <p className="muted-note">Gizli hedef bilgisi Hükümdar ve Vezir görünümünde gösterilir.</p>
+          )}
+        </section>
+      </aside>
+
+      <aside className="player-side-panel council-notes game-player-right" aria-label="Rol rehberi">
+        <section className="player-card role-guide-card">
+          <div className="role-guide-heading">
+            <span className="role-monogram" aria-hidden="true">{role.name.slice(0, 1)}</span>
+            <div>
+              <p className="eyebrow">Rol rehberin</p>
+              <h2>{role.name}</h2>
+            </div>
+          </div>
+          <h3>Sorumlulukların</h3>
+          <ul>{role.responsibilities.map((item) => <li key={item}>{item}</li>)}</ul>
+          <h3>İpuçları</h3>
+          <ul>{role.tips.map((item) => <li key={item}>{item}</li>)}</ul>
+        </section>
+      </aside>
     </main>
   );
 }
