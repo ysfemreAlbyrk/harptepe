@@ -30,7 +30,7 @@ export function PlayerView({ state, kingdomId, roleId, networkStatus, onChangeKi
   return (
     <main className="game-shell player-game-shell">
       <div className="game-map-layer">
-        <InteractiveMap state={state} round={round} selectedKingdom={previewKingdom} onSelect={setPreviewKingdom} />
+        <InteractiveMap state={state} round={round} selectedKingdom={previewKingdom} onSelect={setPreviewKingdom} detailInitiallyOpen={false} />
       </div>
 
       <section className="player-header player-war-hud game-player-hud">

@@ -1775,27 +1775,6 @@ h3,
   z-index: 0;
 }
 
-.map-road {
-  stroke: rgba(225, 194, 133, 0.22);
-  stroke-width: 0.55;
-  stroke-dasharray: 1.8 1.6;
-  vector-effect: non-scaling-stroke;
-}
-
-.map-river {
-  fill: none;
-  stroke: url(#river);
-  stroke-width: 4.2;
-  stroke-linecap: round;
-}
-
-.map-coast {
-  fill: none;
-  stroke: rgba(105, 167, 223, 0.17);
-  stroke-width: 5;
-  stroke-linecap: round;
-}
-
 .map-landmark {
   position: absolute;
   width: 110px;
@@ -1821,110 +1800,6 @@ h3,
   width: 130px;
   border-bottom: 2px solid rgba(105, 167, 223, 0.3);
   border-radius: 50%;
-}
-
-.map-kingdom {
-  position: absolute;
-  z-index: 3;
-  display: grid;
-  grid-template-columns: auto minmax(82px, auto);
-  grid-template-areas:
-    "keep label"
-    "stats stats";
-  gap: 5px 9px;
-  align-items: center;
-  min-width: 150px;
-  padding: 10px;
-  transform: translate(-50%, -50%);
-  color: var(--text);
-  border: 1px solid color-mix(in srgb, var(--kingdom-color) 48%, transparent);
-  border-radius: 20px;
-  background:
-    radial-gradient(circle at 30% 0%, var(--kingdom-soft), transparent 72%),
-    rgba(7, 11, 22, 0.82);
-  box-shadow: 0 15px 34px rgba(0, 0, 0, 0.35);
-  backdrop-filter: blur(10px);
-}
-
-.map-kingdom:hover,
-.map-kingdom.selected {
-  border-color: var(--kingdom-color);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--kingdom-color) 28%, transparent), 0 18px 40px rgba(0, 0, 0, 0.44);
-  transform: translate(-50%, -50%) scale(1.04);
-}
-
-.map-keep {
-  grid-area: keep;
-  width: 42px;
-  height: 42px;
-  display: grid;
-  place-items: center;
-  transform: rotate(45deg);
-  border: 1px solid color-mix(in srgb, var(--kingdom-color) 76%, white 8%);
-  border-radius: 11px;
-  background: rgba(255, 255, 255, 0.04);
-}
-
-.map-keep i {
-  width: 15px;
-  height: 15px;
-  border-radius: 3px;
-  background: var(--kingdom-color);
-  box-shadow: 0 0 18px var(--kingdom-color);
-}
-
-.map-kingdom-label {
-  grid-area: label;
-  text-align: left;
-}
-
-.map-kingdom-label small,
-.map-kingdom-stats em {
-  display: block;
-  color: var(--muted);
-  font-size: 0.61rem;
-  font-style: normal;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.map-kingdom-label strong {
-  display: block;
-  color: var(--paper);
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 1.18rem;
-  line-height: 1;
-}
-
-.map-kingdom-stats {
-  grid-area: stats;
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
-  padding-top: 5px;
-  border-top: 1px solid rgba(240, 223, 189, 0.1);
-}
-
-.map-kingdom-stats b {
-  color: var(--gold-bright);
-  font-size: 0.83rem;
-}
-
-.map-chest {
-  position: absolute;
-  z-index: 2;
-  width: 25px;
-  height: 25px;
-  display: grid;
-  place-items: center;
-  transform: translate(-50%, -50%);
-  border-radius: 7px;
-  color: #211708;
-  background: #777;
-  font-size: 0.65rem;
-  font-weight: 950;
-  box-shadow: 0 7px 16px rgba(0, 0, 0, 0.28);
 }
 
 .chest-available {
@@ -2349,19 +2224,6 @@ h3,
     min-height: 760px;
   }
 
-  .map-kingdom {
-    min-width: 122px;
-    padding: 8px;
-  }
-
-  .map-kingdom-label strong {
-    font-size: 1rem;
-  }
-
-  .map-kingdom-stats em {
-    display: none;
-  }
-
   .map-detail {
     width: auto;
   }
@@ -2739,21 +2601,6 @@ textarea:focus {
   mix-blend-mode: multiply;
 }
 
-.map-road {
-  stroke: rgba(83, 52, 24, 0.42);
-  stroke-width: 0.75;
-  stroke-dasharray: 1.4 1.4;
-}
-
-.map-river {
-  stroke: rgba(66, 111, 131, 0.44);
-  stroke-width: 3.5;
-}
-
-.map-coast {
-  stroke: rgba(66, 111, 131, 0.24);
-}
-
 .landmark-mountain {
   opacity: 0.42;
   background: linear-gradient(145deg, rgba(88, 75, 59, 0.38), rgba(82, 51, 22, 0.12));
@@ -2766,49 +2613,6 @@ textarea:focus {
 
 .landmark-harbor {
   border-bottom-color: rgba(66, 111, 131, 0.42);
-}
-
-.map-kingdom {
-  color: var(--text);
-  border-color: color-mix(in srgb, var(--kingdom-color) 58%, #5c3518 42%);
-  background:
-    radial-gradient(circle at 30% 0%, rgba(255, 244, 211, 0.5), transparent 70%),
-    linear-gradient(145deg, rgba(232, 211, 162, 0.95), rgba(199, 166, 103, 0.94));
-  box-shadow: 0 12px 26px rgba(54, 30, 10, 0.32), inset 0 0 0 1px rgba(255, 244, 211, 0.18);
-}
-
-.map-kingdom:hover,
-.map-kingdom.selected {
-  border-color: color-mix(in srgb, var(--kingdom-color) 70%, #5c3518 30%);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--kingdom-color) 24%, transparent), 0 16px 32px rgba(54, 30, 10, 0.4);
-}
-
-.map-kingdom-label small,
-.map-kingdom-stats em {
-  color: var(--muted);
-}
-
-.map-kingdom-label strong {
-  color: var(--paper);
-}
-
-.map-kingdom-stats {
-  border-top-color: rgba(82, 51, 22, 0.18);
-}
-
-.map-kingdom-stats b {
-  color: #7d2d1d;
-}
-
-.map-keep {
-  border-color: color-mix(in srgb, var(--kingdom-color) 62%, #5c3518 38%);
-  background: rgba(255, 244, 211, 0.24);
-}
-
-.map-chest {
-  color: #fff0c8;
-  background: #695138;
-  border: 1px solid rgba(82, 51, 22, 0.45);
 }
 
 .chest-available {
