@@ -28,7 +28,7 @@ export function Header({ state, phase, dispatch, projectionMode, onToggleProject
         </div>
       </div>
 
-      <div className="hud-time-command">
+      <div className={`hud-time-command ${projectionMode ? 'projection-timing' : ''}`}>
         <div className="phase-plaque">
           <span>Faza</span>
           <strong>{phase.label}</strong>
@@ -44,45 +44,52 @@ export function Header({ state, phase, dispatch, projectionMode, onToggleProject
           <p className="phase-description">{phase.description}</p>
         </div>
 
-        <div className="command-actions" aria-label="Zaman komutları">
-          <button className="primary-button" type="button" onClick={() => dispatch({ type: 'toggleTimer' })}>
-            {state.timerRunning ? 'Duraklat' : 'Başlat'}
-          </button>
-          {upcoming ? (
-            <button
-              className="ghost-button"
-              type="button"
-              onClick={() => dispatch({ type: 'skipToMinute', minute: upcoming.startMinute })}
-            >
-              Sonraki faz
+        {!projectionMode ? (
+          <div className="command-actions" aria-label="Zaman komutları">
+            <button className="primary-button" type="button" onClick={() => dispatch({ type: 'toggleTimer' })}>
+              {state.timerRunning ? 'Duraklat' : 'Başlat'}
             </button>
-          ) : null}
-        </div>
+            {upcoming ? (
+              <button
+                className="ghost-button"
+                type="button"
+                onClick={() => dispatch({ type: 'skipToMinute', minute: upcoming.startMinute })}
+              >
+                Sonraki faz
+              </button>
+            ) : null}
+          </div>
+        ) : null}
       </div>
 
-      <div className="hud-side-console">
-        <button className="projection-button" type="button" onClick={onToggleProjection}>
-          {projectionMode ? 'Yönetim' : 'Projeksiyon'}
-        </button>
-        <div className="minute-jumps" aria-label="Hızlı zaman seçimi">
-          {[43, 65, 87, 107].map((minute) => (
-            <button key={minute} type="button" onClick={() => dispatch({ type: 'skipToMinute', minute })}>
-              {minute}. dk
-            </button>
-          ))}
+      {projectionMode ? (
+        <div className="hud-side-console projection-live-console">
+          <button className="projection-button" type="button" onClick={onToggleProjection}>Yönetim</button>
+          <span className="projection-live-note">Yayın görünümü</span>
         </div>
-        <button
-          className="ghost-button danger-outline reset-button"
-          type="button"
-          onClick={() => {
-            if (window.confirm('Tüm oyun verisi sıfırlanacak. Emin misiniz?')) {
-              dispatch({ type: 'resetGame' });
-            }
-          }}
-        >
-          Sıfırla
-        </button>
-      </div>
+      ) : (
+        <div className="hud-side-console">
+          <button className="projection-button" type="button" onClick={onToggleProjection}>Projeksiyon</button>
+          <div className="minute-jumps" aria-label="Hızlı zaman seçimi">
+            {[43, 65, 87, 107].map((minute) => (
+              <button key={minute} type="button" onClick={() => dispatch({ type: 'skipToMinute', minute })}>
+                {minute}. dk
+              </button>
+            ))}
+          </div>
+          <button
+            className="ghost-button danger-outline reset-button"
+            type="button"
+            onClick={() => {
+              if (window.confirm('Tüm oyun verisi sıfırlanacak. Emin misiniz?')) {
+                dispatch({ type: 'resetGame' });
+              }
+            }}
+          >
+            Sıfırla
+          </button>
+        </div>
+      )}
     </header>
   );
 }
